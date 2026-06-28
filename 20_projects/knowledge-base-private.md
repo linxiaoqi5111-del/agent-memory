@@ -41,3 +41,4 @@ related: ["[[finance-workspace-private]]", "[[finance-research-site]]"]
 
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 AGENTS/CLAUDE）
+- 2026-06-29 · codex · 将多 Agent 共享记忆底座整理为系统设计文档，沉淀到 [[multi-agent-memory-system-design]]，覆盖架构图、权衡、容量估算与面试讲法。
