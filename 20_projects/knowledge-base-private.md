@@ -41,3 +41,9 @@ related: ["[[finance-workspace-private]]", "[[finance-research-site]]"]
 
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 AGENTS/CLAUDE）
+- 2026-06-28 · devin · 晚卖研汇2_20260628 第二批卖研入库（PR #170，分支 sellside-digest/2026-06-28→main，未合并待确认）
+  - daily-ops 晚间流程 Step1-7 全过：concept-delta×11 + entity-delta(4更概伦/洁美/圣泉/东芯 + 1建卡甬矽) + mention_frequency(410主题) + dashboard重建 + check_run_complete exit=0
+  - **batch 隔离**：同日两批用文件名隔离（`晚卖研汇2_`/`-batch2` 后缀），不覆盖第一批 #2171
+  - **硬事实纪律**：broker 源全部进「## 高信度研究线索」，红线核验未污染实体「## 边际变化」正文
+  - **踩坑（已沉淀 lessons [kb]）**：验证 entity-delta 路由时误用 `writer < payload | grep ...` 管道——管道不阻止 writer 完整执行，导致重复追加（概伦/甬矽多段、source 索引「## 已更新实体」追加两次）。正解：writer 只跑一次，捕获 stdout 到文件；验证只读已写文件，绝不重跑 writer。
+  - **账号坑**：内置 git_create_pr 走会话默认账号(noah-smith439374)对 linxiaoqi5111-del 仓 404；PR 必须用 GITHUB_PAT_LINXIAOQI5111 走 REST API。
