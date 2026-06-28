@@ -35,6 +35,28 @@ related: ["[[preferences]]", "[[frontmatter-spec]]", "[[preflight]]", "[[claude-
 - **可迁移**：不依赖某一个 Agent 的私有记忆格式，换工具不丢上下文。
 - **可教学/可面试**：沉淀成系统设计材料，能解释架构权衡。
 
+## 术语表
+
+这篇文档里会用到一些工程缩写。先把它们翻译成人话：
+
+| 术语 | 释义 |
+|---|---|
+| Agent | 能执行任务的 AI 工具或智能体，比如 Codex、Claude Code、Devin、Grok。 |
+| MOC | Map of Content，内容地图。可以理解成一个项目的目录页/总览页，记录项目背景、看板、交接记录和相关链接。 |
+| frontmatter | Markdown 文件开头的 YAML 元数据块，通常夹在两行 `---` 之间，用来写标题、类型、日期、标签等机器可读信息。 |
+| wikilink / 双链 | Obsidian 里的 `[[笔记名]]` 链接，能把两篇笔记关联起来。 |
+| hook | 钩子脚本。某个事件发生时自动执行的脚本，比如 Claude 开窗时自动读记忆、Git 提交前自动检查。 |
+| SessionStart hook | Claude Code 会话开始时触发的 hook，用来自动注入偏好、项目笔记和 Git 状态。 |
+| Stop hook | Claude Code 准备结束回复时触发的 hook，用来检查是否需要回写记忆。 |
+| preflight | 开工前检查。这里指 `preflight.sh`，一次性展示记忆、Git 状态和红线提醒。 |
+| pre-commit | Git 提交前执行的检查机制。这里用它拦截密钥、大文件、缓存等不该提交的内容。 |
+| CI | Continuous Integration，持续集成。通常指 GitHub Actions 这类远端自动检查/测试流程。 |
+| RAG | Retrieval-Augmented Generation，检索增强生成。先从知识库检索相关资料，再让模型基于资料回答。 |
+| BM25 | 一种关键词检索/排序算法，适合精确匹配文件名、术语、股票名、代码等。 |
+| rerank | 重排序。先粗召回一批候选资料，再用更强模型重新排序，把最相关的放前面。 |
+| FTS | Full-Text Search，全文检索。SQLite FTS5 就是本地数据库里的全文搜索能力。 |
+| PAT | Personal Access Token，个人访问令牌。用于让工具访问 GitHub 等服务，不能明文写入仓库。 |
+
 ## 架构图
 
 ```mermaid
