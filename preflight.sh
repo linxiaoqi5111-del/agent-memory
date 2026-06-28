@@ -7,7 +7,9 @@ set -u
 # vault 根 = 本脚本所在目录（经 .agent-memory 软链时会解析到真实 vault 路径）
 V="$(cd "$(dirname "$0")" 2>/dev/null && pwd)"
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-repo="$(basename "$repo_root")"
+# repo 名优先取 git remote（权威，文件夹改名也不受影响），取不到再用文件夹名兜底
+remote="$(git -C "$repo_root" remote get-url origin 2>/dev/null || true)"
+if [ -n "${remote:-}" ]; then repo="$(basename "${remote%.git}")"; else repo="$(basename "$repo_root")"; fi
 
 echo "==================== 开工 PREFLIGHT ===================="
 echo "项目：$repo"
