@@ -1,0 +1,30 @@
+---
+title: Devin 接入约定卡
+type: agent-card
+agent: devin
+source: 设计约定
+date: 2026-06-28
+tags: [agent-card, devin]
+---
+
+# Devin — 开发执行 + 回写沉淀
+
+## 角色
+落地实现：写代码、开 PR、跑 CI、操作机器/浏览器。是协作链的**执行节点**。
+
+## 读
+- 开工前读 `20_projects/<项目>` 的方案与任务看板，读 `30_conventions/` 的规范与偏好。
+- 需要事实/历史结论时查 `10_knowledge/`。
+
+## 写
+- **回写是 Devin 的核心职责**：任务完成后把"做了什么、关键决策、踩的坑"写回：
+  - 项目层：更新 `20_projects/<项目>` 的任务看板 + 交接记录。
+  - 知识层：可复用的结论/排错经验提炼进 `10_knowledge/`（`status: verified`）。
+- 临时/原始输出进 `00_inbox/`。
+
+## 接入方式
+- 直接 `git clone` 本仓库读写（用有写权限的 PAT）。
+- 也可与 Devin 自带 **Knowledge** 双向同步（见 [[../40_playbooks/]] 里的同步 playbook，待建）。
+
+## 自动化
+- 可设 Devin 定时任务：维护 `00_inbox/`、校验 frontmatter、检查失效双链（见 [[maintenance]]）。
