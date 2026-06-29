@@ -9,7 +9,7 @@ status: active
 related: ["[[finance-workspace-private]]", "[[finance-research-site]]"]
 ---
 
-# 知识库 — 项目 MOC
+# 知识库 — 项目 MOC（Map of Content，内容地图/目录页）
 
 ## 概述
 - **是什么**：**LLM 维护的个人知识库 / Wiki**。人类策划来源，LLM 负责写作、交叉引用与维护。底层是金融主题的实体/概念/关系知识图谱（Theme Radar）。
@@ -42,3 +42,4 @@ related: ["[[finance-workspace-private]]", "[[finance-research-site]]"]
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 AGENTS/CLAUDE）
 - 2026-06-29 · codex · 将多 Agent 共享记忆底座整理为系统设计文档，沉淀到 [[multi-agent-memory-system-design]]，覆盖架构图、权衡、容量估算与面试讲法。
+- 2026-06-29 · codex · 打通金融 repo -> 知识库 repo 的 v1 闭环：金融侧生成 `kb_ingest_queue` JSON 任务包；知识库侧 `scripts/kb_ingest_queue.py` 负责 validate/preview/receive，归档到 `wiki/raw/cross-repo-ingest-queue/`，默认人工复核、禁止自动写 wiki。

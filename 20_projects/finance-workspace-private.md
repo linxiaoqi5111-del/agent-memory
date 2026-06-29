@@ -9,7 +9,7 @@ status: active
 related: ["[[knowledge-base-private]]"]
 ---
 
-# 金融项目 — 项目 MOC
+# 金融项目 — 项目 MOC（Map of Content，内容地图/目录页）
 
 ## 概述
 - **是什么**：A股**量化复盘 + 研究工具集**。
@@ -44,3 +44,4 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 README/仓库结构）
+- 2026-06-29 · codex · 新增金融 -> 知识库闭环出口：`agent-daily` 现在基于 `research_queue` 生成 `YYYY-MM-DD-kb-ingest-queue.json`，将概念入库、官方证据、公司边际变化、来源回溯等缺口交给知识库 repo 接收处理；任务包默认 `requires_human_review=true`、`auto_apply=false`。
