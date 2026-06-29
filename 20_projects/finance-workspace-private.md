@@ -46,3 +46,4 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 2026-06-28 · devin · 初次建档（基于 README/仓库结构）
 - 2026-06-29 · codex · 新增金融 -> 知识库闭环出口：`agent-daily` 现在基于 `research_queue` 生成 `YYYY-MM-DD-kb-ingest-queue.json`，将概念入库、官方证据、公司边际变化、来源回溯等缺口交给知识库 repo 接收处理；任务包默认 `requires_human_review=true`、`auto_apply=false`。
 - 2026-06-29 · codex · 提升问答质量层：新增回答阶段判断与反方审稿上下文，区分“预期交易 / 事实验证 / 兑现分歧”等 A 股阶段；`ask --compose` 会把该上下文注入 LLM 合成提示，`agent` 系统提示也要求主动质疑旧预期、提前交易、一阶/二阶受益、报表弹性和硬事实缺口。
+- 2026-06-29 · codex · 新增金融回答质量 rubric：在既有 `agent-eval` 工程门禁之上，增加 `answer-score` 单答案评分器，按本地数据优先、L1-L4 证据分层、盘面阶段、产业推导、反方审稿、结论可用性、双红/流动性等个人方法论贴合度打 100 分；第一版为确定性评分，后续可叠 LLM-as-judge。
