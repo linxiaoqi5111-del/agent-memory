@@ -36,9 +36,9 @@ related: ["[[../50_agents/devin]]", "[[../50_agents/claude]]", "[[../50_agents/c
 
 ## 协作闭环
 
-> **Grok 采集 → Codex 规划/架构 → Claude 实现(学) 或 Devin 执行(委派) → 回写 vault → 下一轮**
+> **Grok 采集 → Codex 规划/架构 → Claude 实现(学) 或 Devin 执行(委派) → 分层沉淀 → 下一轮**
 
-vault 是共享记忆：Grok 的料进 `00_inbox/`，提炼进 `10_knowledge/`；Codex 的设计 + 任务看板进 `20_projects/<repo>.md`；干完按 `40_playbooks/devin-writeback.md` 回写。
+vault 是共享记忆：Grok 的料进 `00_inbox/`，提炼进 `10_knowledge/`；Codex 的设计 + 项目级任务看板进 `20_projects/<repo>.md`；单次问答评分、用户纠偏、案例样本进项目内学习层；干完按 `40_playbooks/devin-writeback.md` 做分层沉淀。
 
 ## 学习 + 面试导向
 
@@ -48,4 +48,4 @@ vault 是共享记忆：Grok 的料进 `00_inbox/`，提炼进 `10_knowledge/`�
 
 ## 给 agent 的一句话（开工时自检）
 - 我接到的活，是不是更该转给更合适的 agent？（采集→Grok / 架构→Codex / 学习型实现→Claude / 委派型执行→Devin）
-- 干完是否按 `40_playbooks/devin-writeback.md` 回写了 `20_projects/<repo>.md`？
+- 干完是否按 `40_playbooks/devin-writeback.md` 判断了沉淀层级：项目级写 `20_projects/<repo>.md`，稳定方法论写 `10_knowledge/`，样本级反馈写项目学习层？
