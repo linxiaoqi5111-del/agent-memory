@@ -15,12 +15,12 @@ related: ["[[finance-stock-analysis-entrypoint-framework]]", "[[finance-workspac
 
 ## 核心流程
 
-第一版采用单次 LLM 调用内的内部自审，不额外增加 API 成本：
+当前版本采用“初稿生成 + 二次反驳/重写”：
 
 1. 先按完整分析路径生成初稿。
-2. 内部运行质检器，检查公司本体、产业链暴露、证据层、大盘/情绪/板块/个股、生命周期、二阶导、反证和条件化结论。
-3. 模拟用户影子反驳，追问是否模板化、是否孤立看个股、证据是否够硬、是否找到更优表达。
-4. 若有缺口，先补写进最终稿。
+2. 对个股问题注入确定性市场价值数据块，包含区间涨幅、峰值涨幅、峰后回撤、峰值收益保留率、半衰期代理、题材状态、个股相对强度排名和同题材强势替代队列。
+3. 第二次 LLM 调用模拟用户影子反驳，追问是否模板化、是否孤立看个股、证据是否够硬、生命周期是否完整、是否找到更优表达。
+4. 若有缺口，二次重写最终稿。
 5. 只输出最终答案，不输出质检过程或审稿过程。
 
 ## 质检器
@@ -43,7 +43,7 @@ related: ["[[finance-stock-analysis-entrypoint-framework]]", "[[finance-workspac
 
 ## 后续升级
 
-若单次调用内自审仍不稳定，再升级为多调用 self-refine：
+若二次调用仍不稳定，再升级为显式多 agent self-refine：
 
 `draft -> checklist critique -> shadow-user critique -> revise -> score -> final`
 
