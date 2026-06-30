@@ -47,3 +47,10 @@ pnpm run build:web
 
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 README/仓库结构）
+
+- 2026-06-30 · devin · 公网快照回归排查 + 修复（微博旧源 / 公众号<25）
+  - **公众号<25**：非代码问题。`passesScoreGateServer` 一直把公众号卡在 qualityScore>=25；线上实测最低 32，无 <25。cninfo 白盒源 <25 是 #86 设计（whitebox 绕过分数门）。
+  - **微博旧源"复活"根因**：`/api/public/refresh` 是**增量**导入——从 watchlist 删掉的源不会自动从缓存移除，旧 feed 的条目仍留在 `.finhot-cache` 并被 `/api/public/deploy` 重新发布。**仅改 watchlist 不够，必须 prune 缓存**。
+  - **缓存真实路径**：`apps/desktop/.finhot-cache`（devweb 以 apps/desktop 为 root），不是仓库根的 `.finhot-cache`。
+  - **本次处理**：PR #88 把 watchlist weibo 50→5、+22 公众号、+cninfo L3 rss；手动从 manifest+entries 删除 43 个旧微博 feed；deploy-public-only.sh 重新部署。线上 finhot.industry7view.com 已为：公众号<25=0、微博只剩 curated 5（当前仅 2014433131 有过线内容）。
+  - **可复用知识**：增量缓存系统里"删订阅"要同时处理"缓存裁剪"，否则旧数据阴魂不散——这在 RAG 的向量库/索引同步里同理（删文档要同步删 embedding）。
