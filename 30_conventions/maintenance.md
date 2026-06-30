@@ -29,6 +29,7 @@ tags: [convention, maintenance, core]
 - [ ] 用了 `_templates/` 对应模板
 - [ ] 引用其他笔记用双链而非复制
 - [ ] 如果是结论/事实，标了 `status`
+- [ ] 若改动会影响其他 Agent 行为（约定/偏好/agent 卡/playbook），已带 provenance 且经人工审阅（见 [[trust-boundary]]）
 
 ## 定期维护任务（可交给 Devin 定时自动化）
 
