@@ -43,7 +43,7 @@ pnpm run build:web
 ## 任务看板
 | 任务 | 负责 | 状态 | 备注 |
 |---|---|---|---|
-|  |  |  |  |
+| cninfo-rss L3 准入收紧（标题二次校验 + 组合规则 + 纠正分类码） | devin | done | PR #92 |
 
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 README/仓库结构）
@@ -61,3 +61,11 @@ pnpm run build:web
   - 准入门槛需修：`config.yaml` 中 `category_yjkb_szsh` 在巨潮前端分类枚举中未出现，实测会返回大量全量公告；`category_zj_szsh` 官方含义是“中介报告”，不是“增减持”。这两项会让 `hard_delta` 噪音很高。
   - 建议：删除/禁用 `category_yjkb_szsh`，把业绩快报改为标题关键词精确匹配；把增减持改走 `category_gqbd_szsh` 或标题关键词二次校验；分类命中后仍需标题正则/排除词二次校验，`hard_delta.xml` 只放高确定性标题。
   - 验证：标准 Python 与 Codex Python 均缺 PyYAML，直接单测会 ImportError；用进程内 yaml shim 跑离线逻辑测试 15 项通过。真实样本 dry-run（近 3 天、每源 1 页）抓到 201 条，其中 hard 132 / review 69，样本暴露分类噪音问题。
+
+- 2026-06-30 · devin · 落实 cninfo-rss 准入收紧（PR #92，接 codex 评审）
+  - **classify() 改「粗筛 → 准入门」两段式**：分类码命中后必须过分类内 `title_include_any/title_exclude_any` 二次校验；不再 `category in cat_map => hard_delta`。
+  - **分类码纠正**：`category_yjkb_szsh`（业绩快报）返回全量公告 → enabled:false，改走标题关键词；`category_zj_szsh`（=中介报告）→ `category_gqbd_szsh`（=股权变动）+ 标题须含 增持/减持/权益变动/持股变动/股份变动。
+  - **新增 `hard_delta_combo_rules`**：宽词（签订/产能/亏损/增持/减持）单独命中只算 review_candidate，需配伴随词（签订+合同/订单、产能+投产/达产）才升 hard_delta。扩充 exclude_any（担保/问询函/关注函/回复/股东会决议/风险提示等）。
+  - **命名纠偏**：feed `l3-hard-delta.xml → l3-candidates-hard-delta.xml`，标题「巨潮 L3 候选 · 高确定性公告」。⚠️ **FinHot 订阅 URL 需同步改**为 `…/l3-candidates-hard-delta.xml`（旧 URL 会 404）。
+  - **验证**：本机装 PyYAML 后单测 21/21（新增准入门 3 + 组合规则 3）；直连 cninfo live dry-run（近 3 天、每源 1 页）fetched=189 / hard=118 / review=71，hard 合集已完全排除担保/问询函/回复/股东会决议/风险提示/招股等噪音。`category_gqbd_szsh` live 返回确为减持/权益变动类，纠正成立。
+  - **环境坑**：Mac 本机 python3 缺 PyYAML，dry-run/单测会 ImportError；本次发现 cninfo 从 Devin 机器可直达，故未动 Mac、直接本地跑 live dry-run。建议给 Mac 装 PyYAML 以便本地跑。
