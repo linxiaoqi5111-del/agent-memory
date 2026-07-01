@@ -69,3 +69,9 @@ pnpm run build:web
   - **命名纠偏**：feed `l3-hard-delta.xml → l3-candidates-hard-delta.xml`，标题「巨潮 L3 候选 · 高确定性公告」。⚠️ **FinHot 订阅 URL 需同步改**为 `…/l3-candidates-hard-delta.xml`（旧 URL 会 404）。
   - **验证**：本机装 PyYAML 后单测 21/21（新增准入门 3 + 组合规则 3）；直连 cninfo live dry-run（近 3 天、每源 1 页）fetched=189 / hard=118 / review=71，hard 合集已完全排除担保/问询函/回复/股东会决议/风险提示/招股等噪音。`category_gqbd_szsh` live 返回确为减持/权益变动类，纠正成立。
   - **环境坑**：Mac 本机 python3 缺 PyYAML，dry-run/单测会 ImportError；本次发现 cninfo 从 Devin 机器可直达，故未动 Mac、直接本地跑 live dry-run。建议给 Mac 装 PyYAML 以便本地跑。
+
+- 2026-07-01 · codex · `feat/disclosure-lookup` 分支试跑验证
+  - **环境**：用临时 git worktree 拉 `origin/feat/disclosure-lookup`（提交 `89aefd4`），`python3.12` venv 安装 `disclosure_lookup/requirements.txt` 成功；本机 Python/OpenSSL 为 Homebrew Python + OpenSSL 3.x。
+  - **验证结果**：`python -m unittest discover -s disclosure_lookup/tests` 通过 61/61；`company 瑞华泰 --days 30 --source cninfo` 约 1.4s 返回公告；首次 `sse_einteract` 需要构建全市场 uid 缓存，实测 2304 条映射耗时 411.5s，`688323 -> 201868`。
+  - **运行坑**：首次 SSE 没有逐页进度输出，长时间静默看起来像卡死；缓存写入 `disclosure_lookup/.cache/sse_uids.json` 后，`sse_einteract` 单源约 24s 返回，组合命令 `cninfo,sse_einteract` 约 1.4s 端到端成功。
+  - **建议**：给 SSE uid 缓存构建加进度日志/提示，或改成按股票代码定向解析 uid，避免新 Mac 首跑等待 6-7 分钟时误判失败。
