@@ -6,7 +6,7 @@ source: https://github.com/linxiaoqi5111-del/knowledge-base-private (AGENTS/CLAU
 date: 2026-06-28
 tags: [project, 知识库, wiki, rag, knowledge-graph, python]
 status: active
-related: ["[[finance-workspace-private]]", "[[finance-research-site]]"]
+related: ["[[finance-workspace-private]]", "[[finance-research-site]]", "[[finance-agent-capability-graph]]"]
 ---
 
 # 知识库 — 项目 MOC（Map of Content，内容地图/目录页）
@@ -43,3 +43,4 @@ related: ["[[finance-workspace-private]]", "[[finance-research-site]]"]
 - 2026-06-28 · devin · 初次建档（基于 AGENTS/CLAUDE）
 - 2026-06-29 · codex · 将多 Agent 共享记忆底座整理为系统设计文档，沉淀到 [[multi-agent-memory-system-design]]，覆盖架构图、权衡、容量估算与面试讲法。
 - 2026-06-29 · codex · 打通金融 repo -> 知识库 repo 的 v1 闭环：金融侧生成 `kb_ingest_queue` JSON 任务包；知识库侧 `scripts/kb_ingest_queue.py` 负责 validate/preview/receive，归档到 `wiki/raw/cross-repo-ingest-queue/`，默认人工复核、禁止自动写 wiki。
+- 2026-07-02 · codex · 新增跨仓金融 Agent 能力图谱 [[finance-agent-capability-graph]]，记录知识库作为事实层、图谱层、RAG 层与 Theme Radar 底座如何被金融 repo 的 ask/daily/forecast_preflight/l3-ingest 消费；后续新增稳定 ingest skill、relations 数据源、RAG 索引或跨仓任务队列时，应同步更新该图。

@@ -6,7 +6,7 @@ source: https://github.com/linxiaoqi5111-del/finance-workspace-private (README/A
 date: 2026-06-28
 tags: [project, 金融, 量化, duckdb, 复盘, python]
 status: active
-related: ["[[knowledge-base-private]]"]
+related: ["[[knowledge-base-private]]", "[[finance-agent-capability-graph]]"]
 ---
 
 # 金融项目 — 项目 MOC（Map of Content，内容地图/目录页）
@@ -92,3 +92,4 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 2026-07-01 · codex · PR #102 补齐复盘会“每日主线题材 -> 核心板块 -> 板块周期状态”语义桥：新增 `fact_mainline_sector_daily`（L4_market_signal，主键 `trade_date/theme_code/sector_ts_code`），同步脚本 `sync_fupanhui_mainline_sector_daily.py`、CLI `sync-mainline-sector-daily`、日更挂载和只读验证脚本；2026-06-30 验证写入 3 themes / 10 sectors，重复同步 10->10 幂等，AI算力/半导体/有色金属抽查 cycle_status 正常。字段保留 `cycle_level/status`、`startup_date_*`、新高/临近突破、强度/资金等，不强制 `dim_sector` 外键以保留复盘会自有 `*.FP` 板块（如 MLCC）。跨 Mac 增量同步无需改 export/import，因为新表是 `fact_` 且含 `trade_date` 会被自动发现；但目标 Mac 必须先更新代码并 `init_db` 建表，否则导入端会因目标库缺表跳过该表。注意 `mainline-sectors.amount` 保留原始 API 单位，后续查询/评分不要直接和 `fact_sector_daily.amount` 混比。
 - 2026-07-01 · codex · 将 `fact_mainline_sector_daily` 接入普通问答 compose 链路为 D4 数据块：`ask --compose` 会从本地 DuckDB 生成“主线题材结构数据块 [D4]”，内容包括最新主线日期、近 20 日主线持续性、核心板块、`cycle_status/cycle_level`、启动日、新高/临近突破、涨停数、板块涨幅、`diff_ratio` 与成交额，并明确区分“真正双红/增量启动”和“缩量强修复/存量抱团”。`llm_refine` 系统提示要求使用 D4 判断主线连续性、启动/顺势/分歧/消亡；`answer_orchestrator` 检索计划增加 D4/主线结构。验证：D4 helper、compose prompt 注入、系统提示、ask chat 回归与实际 `ask 'AI算力怎么看' --compose --no-modules --no-wiki-rag` 均通过；无 LLM key 时仍降级模板，但引用来源会出现 `[D4]`。D4 仍是 L4_market_signal，不写 wiki/entity 正文。
 - 2026-07-02 · codex · 新增复盘正式生成前的 `forecast_preflight` 查漏门：`market_forecast`/`ask --compose` 会先读取 daily-agent 的 `research_queue`，检查旧逻辑唤醒、新逻辑候选、DeepDive/IMA 缺口与 L3 官方证据缺口；若存在 `today_do_ima` 或 `today_find_official_evidence`，正式复盘暂停，先输出需要用户补 DeepDive/官方证据并 ingest 的清单，补齐后再生成正式版。该层做成独立 service 而非 prompt-only，方便编排层、daily-agent 与 HTML 台账共用同一 readiness 判断；缺 daily-agent 单独标记为 `missing_daily_agent`，草稿仍可生成但必须带缺口提示。验证：`intelligence.tests.test_forecast_preflight`、`intelligence.tests.test_answer_orchestrator`、`tests.test_research_queue`、`tests.test_daily_agent` 共 19 项通过。
+- 2026-07-02 · codex · 新增跨仓金融 Agent 能力图谱 [[finance-agent-capability-graph]]，把 finance repo 的 CLI/问答编排/复盘验证/学习闭环，与 knowledge-base repo 的 ingest/RAG/Theme Radar/relations 画成可维护的 Mermaid 总览图；后续新增稳定入口、服务模块、知识库管线或学习节点时，应同步更新该图和节点清单。
