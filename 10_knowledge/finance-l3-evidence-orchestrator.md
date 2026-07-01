@@ -36,6 +36,14 @@ related: ["[[finance-answer-orchestrator]]", "[[finance-stock-analysis-entrypoin
 
 当前优先 CLI 适配器，因为它能复用已有外接公告工具，测试时可以 mock 子进程，不要求常驻服务。
 
+已验证默认入口：
+
+```bash
+python -m disclosure_lookup.cli company 瑞华泰 --days 30 --source cninfo,sse_einteract
+```
+
+验证结论（2026-07-01）：`cninfo` 单源约 1.4 秒；`sse_einteract` 首跑会构建 `sse_uids.json`，2304 条映射，`688323 -> 201868`，实测静默 411.5 秒；缓存后约 24 秒返回大量互动问答，含 `[P1] / [P2]`。因此金融 repo 默认 L3 查询超时应覆盖首跑缓存构建，不能用 30 秒误判失败。后续工程改进方向是给 SSE uid 缓存构建加逐页进度日志，或按股票代码定向解析 uid，减少全市场扫描。
+
 替代方案：
 
 - HTTP API：更适合 Claude、Codex、finhot、网站后端共享调用；代价是要维护服务和权限。
