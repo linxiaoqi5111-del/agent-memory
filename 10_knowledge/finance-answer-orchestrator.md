@@ -6,7 +6,7 @@ source: finance-workspace-private implementation
 date: 2026-06-30
 tags: [finance-agent, qa, orchestration, rag, reasoning]
 status: verified
-related: ["[[finance-answer-self-review-framework]]"]
+related: ["[[finance-answer-self-review-framework]]", "[[finance-l3-evidence-orchestrator]]"]
 ---
 
 # 金融问答编排层
@@ -20,7 +20,7 @@ related: ["[[finance-answer-self-review-framework]]"]
 1. 识别问题类型：个股深挖、题材分析、行情前瞻、新闻/公告冲击、回答质检、方法论讨论、通用问答。
 2. 判断回答深度：quick / standard / deep。
 3. 绑定必需视角：市场结构、板块生命周期、公司本体、证据硬度、逻辑生命周期、二阶导、反证、条件化结论。
-4. 规划证据来源：DuckDB、wiki entity/concept、hybrid RAG、evidence_index、experience_cards、disclosure/interaction API。
+4. 规划证据来源：DuckDB、wiki entity/concept、hybrid RAG、evidence_index、experience_cards、L3 官方证据工具。
 5. 将计划注入 compose prompt，再由 LLM 基于证据链生成并经过影子用户反驳/重写。
 
 ## 技术取舍
@@ -52,7 +52,7 @@ related: ["[[finance-answer-self-review-framework]]"]
 
 ## 后续演进
 
-- P0：计划只注入 prompt，不反向控制检索。
-- P1：计划控制 RAG k 值、DuckDB 查询块、是否调用公告/互动易 API。
+- P0：计划注入 prompt，并用规则决定是否启用 L3 官方证据运行时补查。
+- P1：计划进一步控制 RAG k 值、DuckDB 查询块和 L3 工具优先级。
 - P2：计划绑定评分器，低分自动二次重写。
 - P3：行情前瞻类计划接入“假设 -> 盘后验证 -> 经验卡沉淀”闭环。
