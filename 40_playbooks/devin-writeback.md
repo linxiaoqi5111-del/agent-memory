@@ -20,6 +20,7 @@ related: ["[[feature-lifecycle]]", "[[../50_agents/devin]]"]
 - 单次问答打分、一次用户纠偏、一条回答样本。
 - 临时对话流水、未验证的主观感受。
 - 已经写入项目学习层的经验卡片、纠错样本或评测样本。
+- **日常 ingest / 入库批次内容**：年报 baseline、卖方研报、晨汇等例行入库的批次规模、公司清单、log 号、闸门通过情况等均**不沉淀到 vault**——这些已由知识库自身的 `wiki/log.md` 审计层承接。只有当入库过程中产生**可复用经验/流程变更/架构决策**（如 writer 行为坑、merge driver 缺口、log id 撞号教训）时，才写一条只含经验的记录，批次明细用 `wiki/log.md #N` 指向。
 
 这些内容应写到项目内学习层，例如 `experience_cards.jsonl`、`corrections.jsonl`、eval cases；只有当多次验证后沉淀成稳定原则，再提炼进 `10_knowledge/`。
 
@@ -33,6 +34,7 @@ related: ["[[feature-lifecycle]]", "[[../50_agents/devin]]"]
 2. **知识层**：能跨任务复用的稳定方法论、排错范式、系统设计原则 → 写 `10_knowledge/`，并从项目笔记双链过去。
 3. **学习样本层**：单次回答评分、用户纠偏、案例样本、问答质量反馈 → 写项目内学习文件，不写项目交接记录。
 4. **临时层**：长日志、未整理材料、一次性草稿 → 放 `00_inbox/` 或项目临时目录，不污染 MOC。
+5. **ingest 批次层（不写 vault）**：例行入库的批次事实→只记在知识库 `wiki/log.md`；入库中的错误教训→`finance-workspace-private/.claude/lessons_learned.md`（`[kb]` 前缀）；vault 只留可复用经验/决策。
 
 ## 项目层步骤
 1. **定位项目笔记**：`20_projects/<repo>.md`（`<repo>` = 仓库短名）。不存在就用 `_templates/project.md` 新建。
@@ -51,6 +53,7 @@ related: ["[[feature-lifecycle]]", "[[../50_agents/devin]]"]
 - 不写任何密钥/token 到 vault（PAT、CC_REMOTE_EXEC_TOKEN 等一律不落库）。
 - 不要把整段代码 diff 贴进笔记——记**结论和决策**，代码看 PR。
 - 不要把单次问答评分、用户纠偏和聊天流水写进项目交接记录；这些是学习样本，不是项目 MOC。
+- 不要把 ingest/入库批次内容（批次规模、公司清单、闸门结果等）写进交接记录；明细归 `wiki/log.md`，交接只留可复用经验/决策。
 - 不删别的 agent 的交接记录；只追加，不覆盖历史。
 
 ## 失败/回退
