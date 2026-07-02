@@ -83,3 +83,9 @@ pnpm run build:web
   - **收紧噪音**：exclude 新增 监管协议/管理办法/资产评估报告/财务顾问/报告书摘要/发明专利；降级新增 中标候选人/拟中标/注册证变更；combo 新增 定点/注册证/收购。
   - **关键坑**：`_contains_any` 按列表序返回首个命中 → 特异词（授权许可）必须排在宽词（签订）前，否则 fact_type 归错。关键词规则引擎通用教训：匹配优先级=列表顺序时，specificity 要显式排序。
   - **验证**：单测 35/35（新增 12 例用真实标题回归）；live dry-run 3 天窗口 211 候选/hard 130，抽查 regulatory_approval、order_contract feed 全为高价值公告。
+
+- 2026-07-02 · devin · L3 CLI（disclosure_lookup）优化（PR https://github.com/linxiaoqi5111-del/finhot/pull/98，堆叠在 feat/disclosure-lookup 上，先合底座再合本条）
+  - **CLI 输出控制**：company/keyword/evidence 通用 `--level P0,P1` / `--sort triage` / `--limit N` / `--json`（含 is_reverse，供 agent 消费）；evidence 展示可筛但证据卡生成用全量。
+  - **修 SSE uid 静默痛点**：首次 6-7 分钟构建现在 stderr 报进度（每 10 页）+ 增量落盘（中断不丢已爬）。可复用点：进度走 stderr、数据走 stdout，管道消费不受污染。
+  - **triage 前向兼容 #97**：_LIFECYCLE_HIGH += regulatory_approval，MID += license_out；#97 合入后"中标候选人"会自动降级（triage 复用 cninfo classify）。
+  - **验证**：单测 64/64（新增 3 例）；live keyword 中标 --sort triage 正常。
