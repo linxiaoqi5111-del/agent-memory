@@ -75,3 +75,11 @@ pnpm run build:web
   - **验证结果**：`python -m unittest discover -s disclosure_lookup/tests` 通过 61/61；`company 瑞华泰 --days 30 --source cninfo` 约 1.4s 返回公告；首次 `sse_einteract` 需要构建全市场 uid 缓存，实测 2304 条映射耗时 411.5s，`688323 -> 201868`。
   - **运行坑**：首次 SSE 没有逐页进度输出，长时间静默看起来像卡死；缓存写入 `disclosure_lookup/.cache/sse_uids.json` 后，`sse_einteract` 单源约 24s 返回，组合命令 `cninfo,sse_einteract` 约 1.4s 端到端成功。
   - **建议**：给 SSE uid 缓存构建加进度日志/提示，或改成按股票代码定向解析 uid，避免新 Mac 首跑等待 6-7 分钟时误判失败。
+
+- 2026-07-02 · devin · cninfo-rss 细颗粒度订阅 + 硬筛选收紧（PR https://github.com/linxiaoqi5111-del/finhot/pull/97，待用户确认合并）
+  - **样本驱动**：实拉 2026-06-18~07-02 巨潮真实公告（24 关键词×数百标题）逐类审读后定规则，不是拍脑袋加词。
+  - **细颗粒度**：新增 `feeds/by-fact-type/{fact_type}.xml`，每个事实类型独立 Atom feed（订单/客户定点/注册获证/量产/增减持…），FinHot 可按类型订阅。
+  - **新增高价值类型**：定点(customer_validation)、注册证/获批上市/临床试验批准(regulatory_approval)、CE认证、授权许可(license_out)、交割完成(acquisition)。
+  - **收紧噪音**：exclude 新增 监管协议/管理办法/资产评估报告/财务顾问/报告书摘要/发明专利；降级新增 中标候选人/拟中标/注册证变更；combo 新增 定点/注册证/收购。
+  - **关键坑**：`_contains_any` 按列表序返回首个命中 → 特异词（授权许可）必须排在宽词（签订）前，否则 fact_type 归错。关键词规则引擎通用教训：匹配优先级=列表顺序时，specificity 要显式排序。
+  - **验证**：单测 35/35（新增 12 例用真实标题回归）；live dry-run 3 天窗口 211 候选/hard 130，抽查 regulatory_approval、order_contract feed 全为高价值公告。
