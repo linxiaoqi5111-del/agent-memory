@@ -31,8 +31,12 @@ tags: [convention, maintenance, core]
 - [ ] 如果是结论/事实，标了 `status`
 - [ ] 若改动会影响其他 Agent 行为（约定/偏好/agent 卡/playbook），已带 provenance 且经人工审阅（见 [[trust-boundary]]）
 
-## 定期维护任务（可交给 Devin 定时自动化）
+## 定期维护任务（已脚本化为 exit-code 门）
 
-- 清理 `00_inbox/`：超过 N 天未提炼的条目，提醒或自动归档。
-- 校验 frontmatter：扫描缺字段的笔记。
-- 失效链接检查：双链指向不存在的笔记。
+```bash
+python3 scripts/vault_lint.py    # frontmatter 完整性 / type↔目录一致 / 死链 / inbox 老化(>14天 WARN)
+python3 scripts/graph_audit.py   # 能力图谱节点清单路径防漂移（repo 在本地才校验）
+```
+
+- 回写沉淀前、改动 vault 后各跑一遍 `vault_lint.py`，exit 0 才算写入合规。
+- 改能力图谱或相关仓有结构性合并后跑 `graph_audit.py`。

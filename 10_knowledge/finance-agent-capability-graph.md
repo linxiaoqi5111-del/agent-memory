@@ -17,13 +17,14 @@ related: ["[[finance-workspace-private]]", "[[knowledge-base-private]]", "[[fina
 - 新增入口命令、服务模块、知识库 ingest 管线、运行时证据源、学习闭环或后台自动化时，都要回到本页追加节点。
 - 单次问答纠偏不进本页；只有稳定能力、稳定流程或跨 repo 边界变化才更新。
 - 主图只画“人能记住的能力节点”，细碎脚本放到节点清单或项目 MOC，避免图变成源码依赖图。
+- **防漂移（硬门）**：节点清单表是机器可读事实源，「主要路径」列必须写成反引号路径；每次改本页或相关仓有结构性合并后，跑 `python3 scripts/graph_audit.py` 校验路径是否仍存在，exit 0 才算维护完成。
 
 ## 总览图
 
 ```mermaid
 graph TD
   User["用户 / 多 Agent"] --> CLI["finance-workspace-private<br/>python3 -m intelligence.cli"]
-  User --> Skills["Codex/Claude Skills<br/>finance-stock-deep-dive / serenity-alpha / concept-ingest"]
+  User --> Skills["Codex/Claude Skills<br/>dispatcher → stock-deep-dive / serenity-alpha / concept-ingest"]
 
   subgraph F["金融 Repo：问答、复盘、学习闭环"]
     CLI --> Ask["ask / chat / agent<br/>统一问答与多轮研究"]
@@ -53,7 +54,8 @@ graph TD
     GR --> Compose
     Modules --> Compose
     L3Lookup --> Compose
-    Compose --> Answer["最终回答<br/>结论 / 证据 / 反证 / 验证点 / 引用"]
+    Compose --> Gate["answer_lint 质检门<br/>维度覆盖率 exit-code 门，两轮不过标低置信"]
+    Gate --> Answer["最终回答<br/>结论 / 证据 / 反证 / 验证点 / 引用"]
 
     Daily --> ResearchQueue["research_queue<br/>旧逻辑唤醒 / 新逻辑候选 / 缺口"]
     ResearchQueue --> Preflight
@@ -186,7 +188,11 @@ flowchart LR
 | 公司 baseline | knowledge | `skills/company-baseline-ingest/` | iFinD/年报等 L2 静态底座 |
 | 官方披露归档 | knowledge | `skills/disclosure-archive/` | archive-only 到 reviewed apply |
 | PDF 入库 | knowledge | `skills/pdf-ingest/` | PDF/OCR/raw/source note/质检 |
+| 深挖/前瞻输出契约 | finance | `skills/stock-deep-dive/SKILL.md` | 个股深挖/复盘先验的当次必读输出契约（D1/D2/D3 + 十二视角） |
+| 深挖/前瞻质检门 | finance | `skills/stock-deep-dive/scripts/answer_lint.py` | 最终稿维度覆盖率 exit-code 门 |
 | 长期记忆 | agent-memory | `20_projects/`、`10_knowledge/` | 项目级交接与稳定方法论 |
+| vault 质检门 | agent-memory | `scripts/vault_lint.py` | frontmatter/死链/type-目录一致性/inbox 老化 |
+| 图谱防漂移审计 | agent-memory | `scripts/graph_audit.py` | 校验本页节点清单路径是否仍存在 |
 
 ## 更新规则
 
@@ -200,4 +206,5 @@ flowchart LR
 
 ## 变更记录
 
+- 2026-07-02 · devin · 机制加固：Compose 后补 answer_lint 质检门节点；Skills 入口改为经 dispatcher 路由（修正 finance-stock-deep-dive → stock-deep-dive 命名漂移）；节点清单补 stock-deep-dive 契约/质检门与 vault_lint/graph_audit；新增「防漂移硬门」维护口径。
 - 2026-07-02 · codex · 首版：基于 `finance-workspace-private` 与 `knowledge-base-private` 的 CLI、README、skills、docs 和近期 agent-memory 交接记录生成。
