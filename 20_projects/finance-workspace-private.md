@@ -17,7 +17,7 @@ related: ["[[knowledge-base-private]]", "[[finance-agent-capability-graph]]"]
 - **仓库**：`linxiaoqi5111-del/finance-workspace-private`（private，Python，分支 `main`）
 
 ## 目录导览
-- `db/` — DuckDB：`schema.sql` 表定义、`market.duckdb` 本地列存分析库
+- `db/` — DuckDB：canonical 库是 `market_feature_store.duckdb`（`market.duckdb` 是早期飞书同步阶段的 legacy 路径，不作为当前数据源，见 [[finance-canonical-data-source-freshness]]）
 - `scripts/` — `sync_to_local.py`（飞书→DuckDB）、`detect_turning_points.py`（MA5峰谷+放量信号）、`backfill_sector_marginal.py`（板块边际量回填，CDP代理）、`backtest_sector.py`（板块回测）
 - `intelligence/` `market_feature_store/` `research/` `evolution/` `复盘/`
 - `skills/` — 各分析模块 SKILL.md（注：ingest 类 skill 已于 2026-06-12 迁至 [[knowledge-base-private]] 的 `skills/`）
@@ -26,10 +26,11 @@ related: ["[[knowledge-base-private]]", "[[finance-agent-capability-graph]]"]
 
 ## 数据流
 ```
-fupanhui API ─(CDP proxy)→ backfill_sector_marginal.py → DuckDB / 飞书 Bitable / 飞书表格
-飞书 Bitable ─(API)→ sync_to_local.py → DuckDB
+fupanhui API ─(CDP proxy)→ daily-full → DuckDB (market_feature_store)
 DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际量策略分析
 ```
+
+⚠ 复盘数据的飞书 Bitable 写入已废弃，统一走 `daily-full` → DuckDB；飞书仅保留连板晋级/强势股等 skill 的写入。
 
 ## 环境要求
 - Python 3.9+（duckdb）；Chrome（fupanhui 登录态）；CDP Proxy；飞书凭证 `~/.claude/shared/feishu_config.json`
@@ -103,3 +104,4 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 2026-07-02 · devin · D1-D4 per-block 可观测补齐（同 PR #107）：DBlockStat 记 attempted/generated/行数/未命中原因，进【检索可观测】与审计台账 d_blocks 字段。手册§三 Retrieval 层可观测全部达标。全量 543 单测通过。
 - 2026-07-02 · devin · PR #107 合并前审查记录（另一 IDE 复核）：两个 caveat——① test_agent.py:424 与 agent.py:290 行为不一致（market_db_path 未传时会自动探测默认 duckdb，本机有 DB 则测试挂；非 #107 回归，main 同样失败；临时解法 MARKET_FEATURE_STORE_DB=/nonexistent 隔离，后续需统一'自动启用 vs opt-in'）② registry-check 本机失败源自 knowledge-base-private 仓本地脏状态，与金融仓无关。其余全过：mergeable、无冲突、无风险文件、GitHub CI 绿。
 - 2026-07-02 · devin · 按用户确认'先修再合'：MarketLiveToolTests 加环境隔离（MARKET_FEATURE_STORE_DB 指向不存在路径，修掉'机器有默认 duckdb 则 opt-in 断言被击穿'的环境依赖；行为语义 自动探测 vs opt-in 的统一留待后续单独决策），复现验证：造假默认库→旧测试挂/新测试过。随后 PR #107 已合并 main（mergeable=True，GitHub CI 绿）。
+- 2026-07-02 · devin · 输出稳定性问题（深挖/复盘先验不按满分模版输出）修复：把 agent-memory 三篇方法论（95分路径/自审框架/编排层）固化成金融仓 `skills/stock-deep-dive/`（输出契约 + dispatcher 触发词 + `answer_lint.py` 维度覆盖率 exit-code 门，两轮不过标低置信），PR #109 待确认。根因：模版是知识笔记、离生成时刻太远且无机械校验。同步在 agent-memory 补 `scripts/vault_lint.py`（frontmatter/死链/inbox老化）与 `scripts/graph_audit.py`（能力图谱节点路径防漂移），能力图谱补 answer_lint 质检门节点。

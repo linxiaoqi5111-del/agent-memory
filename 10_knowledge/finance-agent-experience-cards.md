@@ -1,6 +1,8 @@
 ---
 title: 金融 Agent 问答经验卡片机制
 type: knowledge
+agent: codex
+source: finance-workspace-private intelligence/services/experience_cards.py
 date: 2026-06-29
 tags: [金融Agent, 经验卡片, RAG, eval, continual-learning]
 status: active
