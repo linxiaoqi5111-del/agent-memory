@@ -7,7 +7,10 @@
 2. type ↔ 目录一致（frontmatter-spec 的 type 取值表）；
 3. date 格式 YYYY-MM-DD；
 4. 双链死链：`[[笔记名]]` 必须能解析到 vault 内某个 .md 文件名；
-5. inbox 老化：`00_inbox/` 中超过 14 天未提炼的条目（仅 WARN，不拦截）。
+5. inbox 老化：`00_inbox/` 中超过 14 天未提炼的条目（仅 WARN，不拦截）；
+6. 知识过期：`10_knowledge/` 中 `status: verified` 的笔记，若 `last_verified`
+   （缺省回退到 `date`）超过 `stale_after` 天（缺省 90）未复核，降为 WARN，
+   提醒复核后刷新 `last_verified` 或把 status 改回 draft。
 
 用法::
 
@@ -40,6 +43,7 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]")
 CODE_RE = re.compile(r"```.*?```|`[^`\n]*`", re.DOTALL)
 INBOX_MAX_AGE_DAYS = 14
+KNOWLEDGE_STALE_DAYS = 90
 # 不做 frontmatter 校验的路径（模板本身是占位符；README/欢迎页是导览）。
 SKIP_FRONTMATTER = {"_templates", "README.md", "欢迎.md"}
 
@@ -100,10 +104,29 @@ def main() -> int:
         if date_val and not DATE_RE.match(date_val.strip('"')):
             errors.append(f"{rel}: date 格式应为 YYYY-MM-DD，实际 {date_val}")
 
+        last_verified = fm.get("last_verified", "").strip('"')
+        if last_verified and not DATE_RE.match(last_verified):
+            errors.append(f"{rel}: last_verified 格式应为 YYYY-MM-DD，实际 {last_verified}")
+        stale_after = fm.get("stale_after", "").strip('"')
+        if stale_after and not stale_after.isdigit():
+            errors.append(f"{rel}: stale_after 应为天数整数，实际 {stale_after}")
+
         note_type = fm.get("type", "")
         expected_dir = TYPE_DIRS.get(note_type)
         if expected_dir and rel.parts[0] != expected_dir:
             errors.append(f"{rel}: type={note_type} 应放在 {expected_dir}/")
+
+        # 知识过期：verified 笔记超过 stale_after 天未复核
+        if rel.parts[0] == "10_knowledge" and fm.get("status") == "verified":
+            anchor = last_verified if DATE_RE.match(last_verified) else date_val.strip('"')
+            max_age = int(stale_after) if stale_after.isdigit() else KNOWLEDGE_STALE_DAYS
+            if DATE_RE.match(anchor):
+                age = (today - dt.date.fromisoformat(anchor)).days
+                if age > max_age:
+                    warns.append(
+                        f"{rel}: verified 笔记已 {age} 天未复核（>{max_age} 天），"
+                        "复核后刷新 last_verified 或降回 draft"
+                    )
 
         # inbox 老化
         if rel.parts[0] == "00_inbox" and DATE_RE.match(date_val.strip('"')):
