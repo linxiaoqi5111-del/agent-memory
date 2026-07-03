@@ -40,6 +40,7 @@ related: ["[[finance-workspace-private]]", "[[finance-research-site]]", "[[finan
 |  |  |  |  |
 
 ## 交接记录
+- 2026-07-03 · devin · missing-concept 回补收尾（PR #201 待合并，wiki/log.md #2185）：承接 #200 剩余 33 个缺概念引用，三桶裁决清零——①删污染 key 21（报告标题/股票代码/泛产业链层级词/实体名当概念/脏元数据）；②别名重写 10 到已有概念页（LPU→LPU推理芯片、液冷板→冷板式液冷 等）；③真缺页新建 3（Pogo Pin/3D玻璃/离型膜，均引用库内已有 source note，未引入新材料）。收尾 integrity 0 错误/0 告警。**可复用教训**：①泛层级词（材料/设备/耗材）当 concept key 属污染——该信息已由 chain_layer 字段承载，删边只损失噪音（与排除词并集同理：噪音清理类操作风险不对称）；②别名重写/删除工具可用 audit JSON 格式自造输入复用（repair_missing_concept_aliases/remove_polluted_concept_refs 均吃 audit 结构，手工裁决结果包装成 audit 行即可走标准管线）；③该仓无 CI，质量闸门=本地 check_relations_integrity + pytest 56 例 + pre-commit。
 - 2026-06-28 · devin · 初次建档（基于 AGENTS/CLAUDE）
 - 2026-06-29 · codex · 将多 Agent 共享记忆底座整理为系统设计文档，沉淀到 [[multi-agent-memory-system-design]]，覆盖架构图、权衡、容量估算与面试讲法。
 - 2026-06-29 · codex · 打通金融 repo -> 知识库 repo 的 v1 闭环：金融侧生成 `kb_ingest_queue` JSON 任务包；知识库侧 `scripts/kb_ingest_queue.py` 负责 validate/preview/receive，归档到 `wiki/raw/cross-repo-ingest-queue/`，默认人工复核、禁止自动写 wiki。

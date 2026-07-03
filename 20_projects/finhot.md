@@ -92,6 +92,12 @@ pnpm run build:web
   - **triage 前向兼容 #97**：_LIFECYCLE_HIGH += regulatory_approval，MID += license_out；#97 合入后"中标候选人"会自动降级（triage 复用 cninfo classify）。
   - **验证**：单测 64/64（新增 3 例）；live keyword 中标 --sort triage 正常。
 
+- 2026-07-03 · devin · 依赖安全审计第一轮（PR https://github.com/linxiaoqi5111-del/finhot/pull/104，CI 全绿待用户确认合并）
+  - **范围**：GitHub Dependabot 328 告警中的 5 个 critical 全部修复——vitest 3.2.4→3.2.6（直接依赖 patch 升级）+ pnpm.overrides 钉 shell-quote≥1.8.4 / protobufjs≥7.6.1 / handlebars≥4.7.9（均为传递依赖 patch 级）。
+  - **关键坑**：pnpm 10.17 只认根 package.json 的 `pnpm.overrides`，写进 pnpm-workspace.yaml 的 overrides 不生效（该节只服务 catalog）；renderer 测试依赖 @follow/electron-main 的 dist 类型，跑全量 test 前须先 `pnpm --filter @follow/electron-main build`。
+  - **验证**：typecheck 13/13、test 全绿（155+39+65+46）、prettier 过；lockfile 确认 4 个漏洞版本全部升级。
+  - **遗留**：130 个 high 告警已在 PR 内分桶评估——patch/minor 可低风险 override 的一批（tar/minimatch/tmp/node-forge 等）、需评估的 major（electron 38→39、vite、axios、react-router、drizzle-orm 钉版原因不明），建议按桶分 PR 跟进。
+
 - 2026-07-03 · devin · SEO/GEO 基础设施（PR https://github.com/linxiaoqi5111-del/finhot/pull/102，待用户确认合并）
   - **背景**：线上审计发现除首页外全部路径命中 SPA 兜底；Cloudflare「托管 robots.txt」（Content Signals）默认 Disallow GPTBot/ClaudeBot/CCBot/Bytespider/Google-Extended 等 AI 爬虫。
   - **改动**（`rss-proxy.ts` 部署管线 `buildPublicSnapshotFiles`）：新增 robots.txt（显式 Allow 18 个搜索/AI 爬虫）、sitemap.xml（首页+过审条目 /items/<id>，带 lastmod）、llms.txt（llmstxt.org 规范）；每次部署把每条过审条目预渲染为静态 `items/<id>.html`（`isStaticPageSafeId` 白名单防路径注入）；详情页/首页补 canonical、OG、NewsArticle/WebSite JSON-LD；dev server 加三个镜像中间件。新增 `PUBLIC_CANONICAL_BASE`（默认 https://finhot.industry7view.com，sitemap/canonical 必须绝对 URL）。
