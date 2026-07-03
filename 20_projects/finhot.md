@@ -89,3 +89,10 @@ pnpm run build:web
   - **修 SSE uid 静默痛点**：首次 6-7 分钟构建现在 stderr 报进度（每 10 页）+ 增量落盘（中断不丢已爬）。可复用点：进度走 stderr、数据走 stdout，管道消费不受污染。
   - **triage 前向兼容 #97**：_LIFECYCLE_HIGH += regulatory_approval，MID += license_out；#97 合入后"中标候选人"会自动降级（triage 复用 cninfo classify）。
   - **验证**：单测 64/64（新增 3 例）；live keyword 中标 --sort triage 正常。
+
+- 2026-07-03 · devin · SEO/GEO 基础设施（PR https://github.com/linxiaoqi5111-del/finhot/pull/102，待用户确认合并）
+  - **背景**：线上审计发现除首页外全部路径命中 SPA 兜底；Cloudflare「托管 robots.txt」（Content Signals）默认 Disallow GPTBot/ClaudeBot/CCBot/Bytespider/Google-Extended 等 AI 爬虫。
+  - **改动**（`rss-proxy.ts` 部署管线 `buildPublicSnapshotFiles`）：新增 robots.txt（显式 Allow 18 个搜索/AI 爬虫）、sitemap.xml（首页+过审条目 /items/<id>，带 lastmod）、llms.txt（llmstxt.org 规范）；每次部署把每条过审条目预渲染为静态 `items/<id>.html`（`isStaticPageSafeId` 白名单防路径注入）；详情页/首页补 canonical、OG、NewsArticle/WebSite JSON-LD；dev server 加三个镜像中间件。新增 `PUBLIC_CANONICAL_BASE`（默认 https://finhot.industry7view.com，sitemap/canonical 必须绝对 URL）。
+  - **线上已生效**：用用户提供的 CF token（secrets: CLOUDFLARE_API_TOKEN_FINHOT / CLOUDFLARE_ACCOUNT_ID_FINHOT）从 Devin 机器完成一次临时部署——从线上 index.html 内嵌 JSON（var feeds/entriesByFeed/allEntries/enrichments）**反向重建 .finhot-cache**，起 dev:web 后 POST /api/public/deploy。sitemap/llms/静态详情页/feed.xml/api/public/*.json 全部真实可访问。可复用技巧：静态站内嵌数据可反推出部署所需缓存。
+  - **未完成**：/robots.txt 仍被 CF zone 级托管 robots.txt 覆盖（zone industry7view.com=22af35e4fe4274bb58a0e6380c77b5ea）。用户 token 缺 Zone→Bot Management:Edit / Zone Settings:Edit 权限，已请用户在 dash.cloudflare.com/profile/api-tokens 补权限后由 Devin 关闭（bot_management API）。
+  - **CI 坑**：main 上 format:check 一直红（4 文件 prettier）+ precommit.mjs 5 个 regexp/no-unused-capturing-group，本 PR 顺手修了（捕获组→非捕获组）。环境坑：Devin box corepack 签名 bug 需 `COREPACK_INTEGRITY_KEYS=0`；vite 要 Node ≥20.19（`sudo n 22`）；`@rolldown/binding-linux-x64-gnu` 需手动装（勿提交 package.json）。
