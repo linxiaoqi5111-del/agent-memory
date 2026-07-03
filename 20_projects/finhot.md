@@ -48,6 +48,8 @@ pnpm run build:web
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 README/仓库结构）
 
+- 2026-07-03 · devin · 积压 5 PR 评测后经用户确认全部合入 main（顺序 #102→#89→#93→#94→#97）。要点：①#94/#97 的 CI lint 失败是 main 上 `scripts/precommit.mjs` 未过 prettier 的存量问题（b481f23 引入），#102 顺手修了，故 #102 必须先合；②#94 与 #97 在 `skills/cninfo-rss/config.yaml` 排除词列表真冲突（并行分支各自加词），经用户授权按**并集**解决（排除词并集只多滤噪音、误伤风险低；「财务顾问」覆盖「独立财务顾问」去重）。合并后 main CI 全绿、cninfo 测试 24/24 过。**可复用教训**：并行 PR 同改一份关键词配置时，先判断是"并行补充"还是"后者推翻前者"，排除类列表默认并集、准入类列表需逐词裁决。
+
 - 2026-06-30 · devin · 公网快照回归排查 + 修复（微博旧源 / 公众号<25）
   - **公众号<25**：非代码问题。`passesScoreGateServer` 一直把公众号卡在 qualityScore>=25；线上实测最低 32，无 <25。cninfo 白盒源 <25 是 #86 设计（whitebox 绕过分数门）。
   - **微博旧源"复活"根因**：`/api/public/refresh` 是**增量**导入——从 watchlist 删掉的源不会自动从缓存移除，旧 feed 的条目仍留在 `.finhot-cache` 并被 `/api/public/deploy` 重新发布。**仅改 watchlist 不够，必须 prune 缓存**。
