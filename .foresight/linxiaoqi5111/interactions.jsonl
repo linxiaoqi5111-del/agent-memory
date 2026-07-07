@@ -1,0 +1,8 @@
+{"ts": "2026-06-18T05:11:53+00:00", "kind": "click", "weight": 1.0, "themes": [], "stocks": ["中际旭创"], "note": "subconscious#2026-06-18-0511"}
+{"ts": "2026-06-18T05:11:53+00:00", "kind": "click", "weight": 1.0, "themes": ["液冷"], "stocks": [], "note": "subconscious#2026-06-18-0511"}
+{"ts": "2026-06-18T05:11:53+00:00", "kind": "dismiss", "weight": -1.0, "themes": ["钠电"], "stocks": [], "note": "subconscious#2026-06-18-0511"}
+{"ts": "2026-06-18T06:42:52+00:00", "kind": "click", "weight": 1.0, "themes": ["液冷"], "stocks": [], "note": "subconscious#2026-06-18-0637"}
+{"ts": "2026-06-18T07:05:41+00:00", "kind": "ask", "weight": 1.2, "themes": ["氟化工"], "stocks": [], "question": "氟化工会否从'化工周期品'重估为'半导体材料国产替代'逻辑？", "note": "subconscious#2026-06-18-0702"}
+{"ts": "2026-06-18T07:05:41+00:00", "kind": "ask", "weight": 1.2, "themes": ["钠电"], "stocks": [], "question": "钠电对碳酸锂的替代效应会否从'增量替代'转向'存量替代'，触发碳酸锂需求结构性下移？", "note": "subconscious#2026-06-18-0702"}
+{"ts": "2026-06-18T07:05:41+00:00", "kind": "ask", "weight": 1.2, "themes": ["铜箔"], "stocks": [], "question": "HVLP铜箔需求会否从'技术可行'转向'产能瓶颈'，触发铜箔板块从'主题投资'切换至'周期涨价'逻辑？", "note": "subconscious#2026-06-18-0702"}
+{"ts": "2026-06-18T07:05:41+00:00", "kind": "click", "weight": 1.0, "themes": ["铜箔"], "stocks": [], "note": "subconscious#2026-06-18-0702"}
