@@ -139,3 +139,8 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 18:30 全量复盘链（nightly_full_review.sh）末尾追加：最近 12 份答卷 recheck + index 重建（不阻断收尾）。
 - 实测 2026-07-07 全链 2/2 答卷 validate 通过。commit 02e9a17 / bd6bbdb。
 - agent 日志：logs/dual-blind.<date>.<agent>.log；链路日志：logs/dual-blind-forecast.out.log。
+
+### 2026-07-07 · devin · 复盘收尾 Automation 上线
+- Devin Automation `auto-79001292046b4d01b5fecbb28034189c`：工作日 19:15 北京时间（UTC 11:15）自动开会话，
+  经 exec 隧道连 Mac 做清单 agent 侧收尾：扫回检 → Tier1 red-team → 双盲答卷状态 → 回补任务包分类 → 二选一偏好对，一条报告发用户。
+- 依赖：18:30 daily-full-review 跑成（目前仍等 CDP proxy 迁移）；复盘失败时 Automation 只报原因不硬跑。
