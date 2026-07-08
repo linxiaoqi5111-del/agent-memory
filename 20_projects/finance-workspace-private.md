@@ -148,6 +148,7 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 ### 2026-07-08 · devin · 裁决闭环修缮（三仓联动，PR 已合并）
 - 背景：审计发现判断类数据"只进不出"——verdicts 全 unverifiable（manual 无机检）、晨汇 Tier1 写判据不装闹钟、synthesis 279 篇零验证时点、进化.md/策略一次日验证是停更的早期实验。
 - 金融仓 PR #145：checkpoint 新增 `market_daily` metric（`conditions=[{field,op,target}]`，字段白名单 `_FIELD_RE`、字符串简写 `advancers>=3000`）+ `MarketDailyResolver`（到期拉 `fact_market_daily` 当日行逐条比较，全部达标 hit/任一 miss/缺数 unverifiable）+ CLI `--metric-type market_daily --condition ...`；serenity-alpha 输出模板尾加 `## 验证清单`；进化.md 与策略一"次日验证"标 deprecated 指向 checkpoint 体系。
+- 同日金融仓双盲链路继续分流：新增/调整 `scripts/dual_blind_flows.sh` 支持 `briefing|sellside` 两条答卷流，复用当日 manifest_sha，晨汇流读当日晨汇并按 T+1 回检，卖方流读视角日晚间 raw 研报并按 T+3 回检；`scripts/dual_blind_auto_verdict.py` 改为 source-aware verdict，按 `source=duckdb|briefing|sellside` 选择 stream/horizon/eval_date，最近有答卷日期幂等补裁，自动条目可刷新但非 `auto:` 人工裁决永不覆盖。后续排查双盲命中率时要按 source 分账，不要把卖方 T+3 缺数误判为漏裁。
 - 知识库 PR #221：`docs/operations.md` Synthesis 第 5 条强制页尾验证清单（claim/verify_by/落空条件三字段）；morning-briefing Stage 5 加第 0 步"Tier 1 必落 checkpoint"（--source briefing_cross，能机检不落 manual）。
 - 本仓 PR #10：corrections.jsonl 删模板占位行；两条市场路径 checkpoint（daa436/70138e）补 market_daily 规格。interactions 停更结论：采集没坏，潜意识模式 6/18 后未被调用。
 - 可复用原则：判断类存储的质量复利=写入带可裁决结构+到期真裁决+结果回写；分界按句子类型（可被证伪与否）不按文档类型。
