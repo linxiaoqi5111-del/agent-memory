@@ -152,3 +152,10 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 知识库 PR #221：`docs/operations.md` Synthesis 第 5 条强制页尾验证清单（claim/verify_by/落空条件三字段）；morning-briefing Stage 5 加第 0 步"Tier 1 必落 checkpoint"（--source briefing_cross，能机检不落 manual）。
 - 本仓 PR #10：corrections.jsonl 删模板占位行；两条市场路径 checkpoint（daa436/70138e）补 market_daily 规格。interactions 停更结论：采集没坏，潜意识模式 6/18 后未被调用。
 - 可复用原则：判断类存储的质量复利=写入带可裁决结构+到期真裁决+结果回写；分界按句子类型（可被证伪与否）不按文档类型。
+
+### 2026-07-08 · Agent Workbench 第 2 步：foresight 追问闭环（PR #151）
+
+- 新增 `intelligence/services/followups.py`：回答后生成五类追问卡片（证据加深/反证验证/替代标的/盘面回检/题材迁移）。**选型**：LLM（复用 `llm_refine` provider 链）生成具体追问，无 key 时降级为五类模板——追问卡片永远出现，降级记 `llm_unavailable_template_followups`。与 foresight 区别：foresight 是"盘面驱动、每日主动发问"，followups 是"回答驱动、围绕本次答案追问"，共用同一降级哲学。
+- `intelligence/api/app.py`：`_run_ask` 加 `s03 foresight_followups` step + `followups.json` 产物（单独 try，追问失败不拖死主答案——"增强体验与答案正确性解耦"的通用模式）；新增 `GET /api/runs/{id}/followups`。
+- 前端 `index.html`：追问卡片点击 → `POST /api/runs {question, parent_run_id}`；子 run 显示「↳ 追问自」可回跳父 run。父子关联即 run 树，为后续会话/任务图打基础。
+- 测试：`test_followups.py` + workbench API 用例，21 个相关测试全绿；本地无 key 端到端验证通过。PR base=`feat/workbench-p1-ask-api`（#150 未合并），#150 合并后需把 base 改 main。
