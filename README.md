@@ -21,6 +21,7 @@ agent-memory/
 ├── 30_conventions/  # 跨 Agent 共享约定：规范、术语表、个人偏好
 ├── 40_playbooks/    # 可复用工作流（谁负责哪步、交接物格式）
 ├── 50_agents/       # 每个 Agent 的"接入约定卡"（贴进各自工具的指令里）
+├── 60_dialogues/    # 用户与外部 AI（Knevo 等）的原始对话记录（蒸馏语料库，长期保留）
 └── _templates/      # 标准笔记模板（保证写入格式一致）
 ```
 
