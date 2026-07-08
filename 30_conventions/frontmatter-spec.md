@@ -34,6 +34,7 @@ tags: [convention, spec, core]
 | `convention` | `30_conventions/` | 跨 Agent 约定 |
 | `playbook` | `40_playbooks/` | 可复用工作流 |
 | `agent-card` | `50_agents/` | Agent 接入约定卡 |
+| `dialogue` | `60_dialogues/` | 用户与外部 AI 的原始对话记录（蒸馏语料） |
 
 ## 校验要点
 
