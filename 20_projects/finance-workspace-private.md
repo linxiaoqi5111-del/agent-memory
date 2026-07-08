@@ -144,3 +144,10 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - Devin Automation `auto-79001292046b4d01b5fecbb28034189c`：工作日 19:15 北京时间（UTC 11:15）自动开会话，
   经 exec 隧道连 Mac 做清单 agent 侧收尾：扫回检 → Tier1 red-team → 双盲答卷状态 → 回补任务包分类 → 二选一偏好对，一条报告发用户。
 - 依赖：18:30 daily-full-review 跑成（目前仍等 CDP proxy 迁移）；复盘失败时 Automation 只报原因不硬跑。
+
+### 2026-07-08 · devin · 裁决闭环修缮（三仓联动，PR 已合并）
+- 背景：审计发现判断类数据"只进不出"——verdicts 全 unverifiable（manual 无机检）、晨汇 Tier1 写判据不装闹钟、synthesis 279 篇零验证时点、进化.md/策略一次日验证是停更的早期实验。
+- 金融仓 PR #145：checkpoint 新增 `market_daily` metric（`conditions=[{field,op,target}]`，字段白名单 `_FIELD_RE`、字符串简写 `advancers>=3000`）+ `MarketDailyResolver`（到期拉 `fact_market_daily` 当日行逐条比较，全部达标 hit/任一 miss/缺数 unverifiable）+ CLI `--metric-type market_daily --condition ...`；serenity-alpha 输出模板尾加 `## 验证清单`；进化.md 与策略一"次日验证"标 deprecated 指向 checkpoint 体系。
+- 知识库 PR #221：`docs/operations.md` Synthesis 第 5 条强制页尾验证清单（claim/verify_by/落空条件三字段）；morning-briefing Stage 5 加第 0 步"Tier 1 必落 checkpoint"（--source briefing_cross，能机检不落 manual）。
+- 本仓 PR #10：corrections.jsonl 删模板占位行；两条市场路径 checkpoint（daa436/70138e）补 market_daily 规格。interactions 停更结论：采集没坏，潜意识模式 6/18 后未被调用。
+- 可复用原则：判断类存储的质量复利=写入带可裁决结构+到期真裁决+结果回写；分界按句子类型（可被证伪与否）不按文档类型。
