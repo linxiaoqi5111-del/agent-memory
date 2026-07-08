@@ -10,3 +10,5 @@
 {"id": "ck-2026-07-06-4be68b", "checked_at": "2026-07-08T12:05:14+00:00", "verdict": "unverifiable", "score": null, "data_source": "manual", "auto": true, "reason": "无机检规格（manual）：用 `checkpoint score --id <id> --verdict hit|miss|partial` 人工打分"}
 {"id": "ck-2026-07-06-aef0e5", "checked_at": "2026-07-08T12:05:14+00:00", "verdict": "unverifiable", "score": null, "data_source": "manual", "auto": true, "reason": "无机检规格（manual）：用 `checkpoint score --id <id> --verdict hit|miss|partial` 人工打分"}
 {"id": "ck-2026-07-07-70138e", "checked_at": "2026-07-08T12:05:14+00:00", "verdict": "unverifiable", "score": null, "data_source": "manual", "auto": true, "reason": "无机检规格（manual）：用 `checkpoint score --id <id> --verdict hit|miss|partial` 人工打分"}
+{"id": "ck-2026-07-06-daa436", "checked_at": "2026-07-08T12:38:57+00:00", "verdict": "miss", "score": 0.0, "data_source": "manual", "auto": false, "reason": "机检代算：7/6 涨家1876<3000、涨停64<95、跌停46>25，触发证伪线涨家<2500"}
+{"id": "ck-2026-07-07-70138e", "checked_at": "2026-07-08T12:38:57+00:00", "verdict": "miss", "score": 0.0, "data_source": "manual", "auto": false, "reason": "机检代算：7/7 涨家693<2300、涨停33<70、成交25810<30000亿，触发证伪线涨家<1600"}
