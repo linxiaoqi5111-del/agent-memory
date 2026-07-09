@@ -1,3 +1,4 @@
 {"ts": "2026-07-09T05:36:46+00:00", "question": "2026-07-08 涨停股里大单净流入最强的是哪只？主买净额多少？依据什么口径？", "question_type": "general_finance_qa", "total_score": 83, "max_score": 100, "grade": "B", "failures": ["本地数据优先不足：未体现本地知识库/金融 repo 优先", "反方审稿不足：缺少反方审稿"]}
 {"ts": "2026-07-09T05:38:55+00:00", "question": "深信服 Q2 财报拐点前值不值得左侧布局？要求结合逐季财报兑现节奏、近期大单资金流、板块中期趋势三层证据，给可证伪的触发条件。", "question_type": "theme_analysis", "total_score": 75, "max_score": 100, "grade": "B", "failures": ["本地数据优先不足：未体现本地知识库/金融 repo 优先", "反方审稿不足：缺少反方审稿"]}
 {"ts": "2026-07-09T05:41:31+00:00", "question": "信创现在的形态历史上出现过吗？后来怎么走的？据此推演未来一个月，禁止给数值概率。", "question_type": "general_finance_qa", "total_score": 82, "max_score": 100, "grade": "B", "failures": ["证据分层不足：缺少 L1-L4 或事实/情绪/基本面分层", "反方审稿不足：反方审稿不足，回答容易顺着题材讲"]}
+{"ts": "2026-07-09T05:43:20+00:00", "question": "后量子密码最近 90 天有什么实质催化？如果查不到就明说，不要编。", "question_type": "general_finance_qa", "total_score": 82, "max_score": 100, "grade": "B", "failures": ["反方审稿不足：缺少反方审稿"]}
