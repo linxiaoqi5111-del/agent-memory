@@ -8,3 +8,4 @@
 {"ts": "2026-07-09T09:17:05+00:00", "question": "人形机器人 之前的判断验证得怎么样", "question_type": "general_finance_qa", "total_score": 100, "max_score": 100, "grade": "A", "failures": []}
 {"ts": "2026-07-09T09:17:20+00:00", "question": "人形机器人 之前的判断验证得怎么样", "question_type": "general_finance_qa", "total_score": 100, "max_score": 100, "grade": "A", "failures": []}
 {"ts": "2026-07-09T09:19:07+00:00", "question": "人形机器人 之前的判断验证得怎么样", "question_type": "general_finance_qa", "total_score": 100, "max_score": 100, "grade": "A", "failures": []}
+{"ts": "2026-07-09T09:20:42+00:00", "question": "人形机器人 之前的判断验证得怎么样", "question_type": "general_finance_qa", "total_score": 80, "max_score": 100, "grade": "B", "failures": ["本地数据优先不足：未体现本地知识库/金融 repo 优先", "反方审稿不足：缺少反方审稿"]}
