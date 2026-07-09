@@ -4,3 +4,4 @@
 {"ts": "2026-07-09T05:43:20+00:00", "question": "后量子密码最近 90 天有什么实质催化？如果查不到就明说，不要编。", "question_type": "general_finance_qa", "total_score": 82, "max_score": 100, "grade": "B", "failures": ["反方审稿不足：缺少反方审稿"]}
 {"ts": "2026-07-09T05:45:20+00:00", "question": "结合我之前的纠偏原则（公司澄清不等于硬反证那条），重新审视瑞华泰的 PI 膜逻辑现在处于生命周期哪一段。", "question_type": "general_finance_qa", "total_score": 81, "max_score": 100, "grade": "B", "failures": ["本地数据优先不足：未体现本地知识库/金融 repo 优先", "反方审稿不足：反方审稿不足，回答容易顺着题材讲"]}
 {"ts": "2026-07-09T05:47:02+00:00", "question": "数据安全板块近 20 日的双红天数和拥挤度分位是多少？", "question_type": "theme_analysis", "total_score": 74, "max_score": 100, "grade": "C", "failures": ["本地数据优先不足：未体现本地知识库/金融 repo 优先", "反方审稿不足：缺少反方审稿"]}
+{"ts": "2026-07-09T07:11:43+00:00", "question": "信创现在的形态历史上出现过吗？后来怎么走的？据此推演未来一个月，禁止给数值概率。", "question_type": "general_finance_qa", "total_score": 77, "max_score": 100, "grade": "B", "failures": ["证据分层不足：缺少 L1-L4 或事实/情绪/基本面分层", "反方审稿不足：缺少反方审稿; 缺少证伪/反证检查"]}
