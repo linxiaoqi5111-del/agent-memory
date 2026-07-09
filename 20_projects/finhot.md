@@ -114,3 +114,5 @@ pnpm run build:web
 - 2026-07-08 · codex · 短视频公网 logo 二次校验：同名覆盖 `renders/finhot-short-video.mp4` 后抽帧仍显示旧小火焰图标，判断为 HyperFrames/播放器缓存或重复媒体发现导致。已改为三份唯一素材名（`finhot-public-logo-reveal/slogan/cta.jpg`，hash 均等于用户提供图片）、删除旧 motion assets 中的 `finhot-logo.svg/png`、composition id 改 `finhot-promo-public-logo-v2`，并输出新文件 `renders/finhot-short-video-public-logo-v2.mp4`。已从新 MP4 抽 11s/73s 帧验证，均显示完整 FINHOT 公网图。
 
 - 2026-07-08 · codex · 已评审用户桌面版 `finhot-promo-75s.mp4`（实际 80.15s，Remotion 输出）：抽帧拼图与音频统计产物放在 `docs/marketing/finhot-short-video-motion/review/finhot-promo-75s/`，评审文档为 `voice-and-visual-review.md`。结论：配音 AI 感主要来自响度偏低（约 -26.6 LUFS）和动态起伏窄（LRA 约 3.8 LU），建议重新分段生成/真人录口播并标准化到 -16~-18 LUFS；画面建议优先改开头 0-1s Hook、截图局部放大、结尾完整公网 logo 强露出、减少底部字幕重复。
+
+- 2026-07-09 · codex · 用户补录真人口播 `20260709_095609.m4a`（100.76s）。已在 `docs/marketing/finhot-short-video-motion/review/user-voice-20260709/` 生成处理链路与记录：自动剪停顿后强剪版约 83.2s，再轻微变速贴合现有 80.1s 视频，最终音轨 `user-voice-fit-80s-final.m4a` 约 -18.3 LUFS / -1.9 dBFS true peak。已输出桌面预览 `/Users/a77/Desktop/finhot-promo-user-voice-preview.mp4`。注意：该预览替换了原音轨，暂不含 clean BGM；正式版建议要么把 motion 时间线扩到约 83s 保留自然停顿，要么人工删句/剪停顿后再配 clean BGM ducking。
