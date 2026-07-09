@@ -11,7 +11,9 @@ Agent 的技能组织有两种主流形态：
 
 ## 实现对照
 - Knevo：finance-mode 唯一挂载（search_skills count=0），8 个下游 skill 藏在其 workflow 路由表里，按意图派 sub-agent（q6/q7 蒸馏）。
-- 我们：`.claude/skills/` 平铺 + SKILL.md 触发词，daily-ops 充当"弱入口"编排子 skill——介于两者之间。
+- 我们：**双轨制**——问答走总台（intelligence ask：意图路由 brief/deep-dive/replay → 拼装 W/M/D0-D8 块 → 统一质检出口，形态与 finance-mode 同构且块粒度更细）；操作类（入库/抓数/写库）走平铺 skill 触发词直达，不经 ask。
+- 双轨的合理性：问答横切纪律多（检索前置/引用/质检）适合总台；操作流程固定、误猜意图会误触写库，适合直达。Knevo 不给用户做写库型操作，所以能全走单入口——有写操作的系统不能照抄。
+- Knevo 相对我们 ask 的真增量只有两样：派单权限分层（见 [[preset权限分层与最小权限]]）和 sub-agent 隔离并行（我们是同进程拼块）。
 
 ## 跨域同构
 微服务的 **API Gateway vs 点对点直连**；前端的集中式路由表 vs 文件式路由。面试常考：集中式网关的利（统一鉴权/限流/观测）弊（单点、发布耦合）。
