@@ -23,6 +23,8 @@ tags: [convention, spec, core]
 | `tags` | ✅ | 标签数组，便于检索 | `[finhot, data, pipeline]` |
 | `status` | ⬜ | `draft` / `verified` / `deprecated` | `verified` |
 | `related` | ⬜ | 双链到相关笔记 | `["[[finhot-overview]]"]` |
+| `reviewed_by` | ⬜ | 人审者；`70_tutor` 落库时必须为 `human` | `human` |
+| `reviewed_at` | ⬜ | 人审日期；`70_tutor` 落库时必填 | `2026-07-10` |
 
 ## `type` 取值
 
@@ -35,10 +37,13 @@ tags: [convention, spec, core]
 | `playbook` | `40_playbooks/` | 可复用工作流 |
 | `agent-card` | `50_agents/` | Agent 接入约定卡 |
 | `dialogue` | `60_dialogues/` | 用户与外部 AI 的原始对话记录（蒸馏语料） |
+| `tutor-note` | `70_tutor/` | 经用户检阅批准的科普 / 原理学习资产 |
 
 ## 校验要点
 
 - 日期统一 `YYYY-MM-DD`。
 - `agent` 用小写固定值，方便聚合"谁写了什么"。
 - `verified` 状态表示有人/某 Agent 核实过，可被下游放心引用；`draft` 表示待核实。
+- `70_tutor/` 必须先按 `tutor` skill（手动触发：`@tutor` 或 `@session-tutor`；自然语言“session tutor”也可）帮助用户理解，再给候选摘要；只有用户明确批准后才能写文件。
+- 用户批准表示内容可以落库，不自动等于事实已核验；仍有待核点时保留 `status: draft`。
 - 引用其他笔记用 Obsidian 双链 `[[文件名]]`，不要用裸文件路径。
