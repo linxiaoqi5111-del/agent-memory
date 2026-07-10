@@ -9,6 +9,24 @@ description: 会话中或收尾时，先用通俗解释、类比和场景映射�
 
 严格顺序：**先教学 → 确认理解 → 再提案 → 明确批准 → 最后落库**。
 
+## 规范源与跨仓库定位
+
+本 skill 的规范源是 `linxiaoqi5111-del/agent-memory` 仓库中的
+`.agents/skills/tutor/SKILL.md`。Finance 和 Knowledge 仓库可以保留同内容镜像，
+只用于确保各自仓库会话能发现 skill；不得在镜像中独立演化流程。
+
+激活后先定位 Agent Memory 根目录，后续 `70_tutor/` 搜索、模板读取、lint、Git
+分支和 PR 都必须在该仓库中完成，不能误写到当前业务仓库：
+
+1. 当前仓库本身的 `origin` 是 `linxiaoqi5111-del/agent-memory` 时，使用当前仓库根目录。
+2. 否则依次检查当前仓库的 `.agent-memory/`、环境变量 `AGENT_MEMORY_DIR`、当前会话已克隆仓库中的 `agent-memory/`。
+3. 仍未找到时，使用当前会话报告的持久化 Repos 目录，从
+   `https://github.com/linxiaoqi5111-del/agent-memory.git` clone；不得把仓库放在会被重启清理的临时目录。
+4. clone 或鉴权失败时可以继续教学，但停止查重、提案和落库，并请用户为当前 Devin GitHub 集成授权 Agent Memory 仓库。
+5. 找到仓库后，以其默认分支最新状态为基线；不得覆盖工作区已有改动。需要写入时新建独立分支和 PR。
+
+如果镜像与 Agent Memory 默认分支中的规范源不一致，优先执行规范源，并把镜像同步作为单独维护任务；不得混用两个版本的部分步骤。
+
 ## 硬闸门
 
 - 用户尚未确认理解前，不得展示批量落库候选，更不得创建、修改、提交或推送任何 `70_tutor/` 笔记。
