@@ -6,7 +6,7 @@
 
 ## 落库流程
 
-使用 `session-tutor-writeback` skill：
+使用 `tutor` skill（手动触发：`@tutor` 或 `@session-tutor`；自然语言“session tutor”也可）：
 
 1. 会话结束前只整理候选摘要，不写文件；
 2. 用户检阅理解，可要求修改或跳过；

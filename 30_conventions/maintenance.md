@@ -24,7 +24,7 @@ tags: [convention, maintenance, core]
 
 ## 科普学习资产：先检阅，后落库
 
-`70_tutor/` 保存用户理解概念、原理和技术取舍所需的学习笔记，不保存 Agent 的运行知识。会话收尾时使用 `session-tutor-writeback` skill：
+`70_tutor/` 保存用户理解概念、原理和技术取舍所需的学习笔记，不保存 Agent 的运行知识。会话收尾时使用 `tutor` skill（手动触发：`@tutor` 或 `@session-tutor`；自然语言“session tutor”也可）：
 
 1. Agent 只生成候选摘要，不改文件；
 2. 用户检阅、要求修正或明确批准具体候选；

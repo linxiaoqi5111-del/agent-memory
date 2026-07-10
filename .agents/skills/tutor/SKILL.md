@@ -1,5 +1,5 @@
 ---
-name: session-tutor-writeback
+name: tutor
 description: 会话收尾时，把本轮产生的可迁移科普/原理讲解先整理成候选摘要交用户检阅；仅在用户明确批准具体候选后，才写入 agent-memory/70_tutor。Use when a session taught concepts, architecture tradeoffs, design principles, or cross-domain analogies.
 ---
 
