@@ -43,6 +43,7 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 |---|---|---|---|
 | D8 剧本库扩容：DuckDB 回补 2019~2024 板块逐日历史（pct_chg/diff_ratio/amount），随后写「历史窗口扫描→批量 draft 卡」脚本半自动扩卡（口径与 fact_sector_daily 统一、量能维度补齐；catalyst/环境标签仍走人工/知识库）| 用户回补数据 → devin 写扫描脚本 | 待办 | 2026-07-09 留档；参考 duckdb-backfill skill；卡入库仍走 draft→多源核数→approved 门控 |
 | Agent Workbench UI 重构与产物渐进迁移 | codex | doing | 分支 `codex/feat/workbench-ui-redesign`；设计提交 `a233190`，待用户审阅 spec 后进入实施计划 |
+| delta package 契约强化（manifest v1 / 多维校验 / 安全解压 / 原子回滚 / data-quality CI）| devin | doing | PR #179 待 review/merge，尚未合并；后续单独做历史债务清洗与环境 blueprint |
 
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 README/仓库结构）
@@ -168,3 +169,4 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 迁移策略：现有驾驶舱、复盘组合、Agent 简报、策略矩阵、双盲等 HTML 先零重写注册/嵌入；高频页面再按“研究回答 → daily-agent → 证据/记忆/回检”顺序原生化，功能等价前不删除旧渲染器。
 - 技术选型：React + Vite 静态前端由现有 FastAPI 托管，继续复用 SSE；相比 Next.js，不引入第二套 Node 服务端运行时。右侧检查器默认展示证据、时点、L1-L4、缺口与降级，记忆展示本次命中的 corrections/experience cards，而非泛化成长等级。
 - 设计文档：`docs/superpowers/specs/2026-07-10-agent-workbench-ui-redesign-design.md`，分支提交 `a233190`。当前停在 spec 用户审阅门，尚未进入实现。
+- 2026-07-10 · devin · 强化跨机增量同步的 delta package 契约（PR #179，待 review/merge，**尚未合并**）：给 `db_delta_*` 增量包加 manifest v1 + checksum/schema/date/row/table-set 多维校验、安全解压（防 zip 路径穿越）、完整包 vs partial 包显式语义、zero-row 修正、导入失败原子回滚，并挂 data-quality CI。**可复用架构决策**：跨机数据同步的可靠性靠「自描述 manifest + 多维校验 + 原子回滚」，把「按名存在」升级为「内容经校验可信」；完整/partial 语义必须显式化，否则消费端会把部分包当整包合并。测试 1031 passed / 2 skipped、CI 全绿。**后续动作**：先 review/merge，再单独做历史遗留债务清洗与环境 blueprint。
