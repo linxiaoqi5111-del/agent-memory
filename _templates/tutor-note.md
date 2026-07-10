@@ -31,6 +31,16 @@ reviewed_at:
 ## 可复用检查清单
 -
 
+## 自测题
+-
+
+<details>
+<summary>参考答案</summary>
+
+-
+
+</details>
+
 ## 跨领域同构
 -
 
