@@ -6,7 +6,7 @@ source: https://github.com/linxiaoqi5111-del/knowledge-base-private (AGENTS/CLAU
 date: 2026-06-28
 tags: [project, 知识库, wiki, rag, knowledge-graph, python]
 status: active
-related: ["[[finance-workspace-private]]", "[[finance-research-site]]", "[[finance-agent-capability-graph]]"]
+related: ["[[finance-workspace-private]]", "[[finance-research-site]]", "[[finance-agent-capability-graph]]", "[[demand-first-theme-vertical-slice]]"]
 ---
 
 # 知识库 — 项目 MOC（Map of Content，内容地图/目录页）
@@ -37,9 +37,11 @@ related: ["[[finance-workspace-private]]", "[[finance-research-site]]", "[[finan
 ## 任务看板
 | 任务 | 负责 | 状态 | 备注 |
 |---|---|---|---|
+| Top-N 主题纵切片 planner | devin | done | PR #256（堆叠 #255），见 [[demand-first-theme-vertical-slice]] |
 | F10 missing-exposure 终态路由 | devin | done | PR #255（堆叠 #254） |
 
 ## 交接记录
+- 2026-07-10 · devin · P2 主题纵切片 planner 已落地（PR #256，堆叠 #255）：先用真实 eval、近期/历史提及、Theme Radar 来源和公司覆盖选 Top N，再用 concept page、parent、产业链、exposure、L1、source、wikilink、eval 十道 gate 路由为 `ready/build`；无法解析到 canonical concept 的信号只进 ontology `review`，必须确认 exact/alias、parent、node type、source 后才能 create/alias/reject，禁止自动建页或强造关系。产物同时提供 JSON 机器合同与 Markdown 执行视图。**关键决策**：重要度与完成度分离，避免“缺得越多优先级越高”反向奖励冷门空页；Graph RAG 前先完成高价值节点的证据闭环，而非平均清理全库。方法论见 [[demand-first-theme-vertical-slice]]。
 - 2026-07-10 · devin · F10 baseline `missing exposures` 改为可审计终态合同（PR #255，堆叠 #254）：候选经 canonical exact/alias 匹配后写 `apply`，有 F10 支撑但缺 canonical concept 的进入 `review`，无可验证候选的写 `no_exposure`；后两者保留 company baseline 但不写 relations，避免为了通过门禁强造弱关系。每个终态记录 reason/source/raw/decision time，历史失败可复用 raw 重跑。该放宽只适用于 a-stock，年报完整入库闸门不变。**可复用原则**：验证门禁应区分“输入无效”与“合法的空关系结果”；空关系是业务终态，不应等同于整条记录失败。
 - 2026-07-09 · devin · a-stock baseline 全量放量收官（批次明细见 wiki/log.md #2417–#2437，PR #226–#247）：队列 2032 家全部处理完毕。**可复用经验**：①runner fetch 阶段改 ThreadPoolExecutor 8 并发（每家独立 raw json 互不冲突），build/写库保持串行——「并行抓取+串行写入」生产者-消费者模式，批耗时 18min→4min；写入端共享 relations 大 JSON 决定了多 agent/多会话并行不可行，提速应在 IO 阶段做。②`scan_entity_baseline_queue.py` 会整队列重置为 pending（覆盖已处理状态）——batch 进行中禁止重跑 scan，误跑后用 `git checkout --` 恢复；③批次 PR 叠链（每批 base 指向前一批分支）+ 固定 finalize 脚本（log 追加/staged 白名单/红线检查/REST 建 PR）适合长滚动批量任务。
 - 2026-07-03 · devin · missing-concept 回补收尾（PR #201 待合并，wiki/log.md #2185）：承接 #200 剩余 33 个缺概念引用，三桶裁决清零——①删污染 key 21（报告标题/股票代码/泛产业链层级词/实体名当概念/脏元数据）；②别名重写 10 到已有概念页（LPU→LPU推理芯片、液冷板→冷板式液冷 等）；③真缺页新建 3（Pogo Pin/3D玻璃/离型膜，均引用库内已有 source note，未引入新材料）。收尾 integrity 0 错误/0 告警。**可复用教训**：①泛层级词（材料/设备/耗材）当 concept key 属污染——该信息已由 chain_layer 字段承载，删边只损失噪音（与排除词并集同理：噪音清理类操作风险不对称）；②别名重写/删除工具可用 audit JSON 格式自造输入复用（repair_missing_concept_aliases/remove_polluted_concept_refs 均吃 audit 结构，手工裁决结果包装成 audit 行即可走标准管线）；③该仓无 CI，质量闸门=本地 check_relations_integrity + pytest 56 例 + pre-commit。
