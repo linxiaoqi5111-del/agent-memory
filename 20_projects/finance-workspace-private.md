@@ -42,6 +42,7 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 | 任务 | 负责 | 状态 | 备注 |
 |---|---|---|---|
 | D8 剧本库扩容：DuckDB 回补 2019~2024 板块逐日历史（pct_chg/diff_ratio/amount），随后写「历史窗口扫描→批量 draft 卡」脚本半自动扩卡（口径与 fact_sector_daily 统一、量能维度补齐；catalyst/环境标签仍走人工/知识库）| 用户回补数据 → devin 写扫描脚本 | 待办 | 2026-07-09 留档；参考 duckdb-backfill skill；卡入库仍走 draft→多源核数→approved 门控 |
+| Agent Workbench UI 重构与产物渐进迁移 | codex | doing | 分支 `codex/feat/workbench-ui-redesign`；设计提交 `a233190`，待用户审阅 spec 后进入实施计划 |
 
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 README/仓库结构）
@@ -159,3 +160,11 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - `intelligence/api/app.py`：`_run_ask` 加 `s03 foresight_followups` step + `followups.json` 产物（单独 try，追问失败不拖死主答案——"增强体验与答案正确性解耦"的通用模式）；新增 `GET /api/runs/{id}/followups`。
 - 前端 `index.html`：追问卡片点击 → `POST /api/runs {question, parent_run_id}`；子 run 显示「↳ 追问自」可回跳父 run。父子关联即 run 树，为后续会话/任务图打基础。
 - 测试：`test_followups.py` + workbench API 用例，21 个相关测试全绿；本地无 key 端到端验证通过。PR base=`feat/workbench-p1-ask-api`（#150 未合并），#150 合并后需把 base 改 main。
+
+### 2026-07-10 · Agent Workbench UI 重构与产物渐进迁移设计
+
+- 用户确认采用“统一研究入口”：自由研究为首屏主动作，每日复盘、题材深挖、个股研究作为快捷工作流，共用 Run/Trace/Artifact/追问协议。
+- 核心覆盖契约：所有面向 human reading 的 HTML/Markdown/结构化报告必须进入 Artifact Registry，能从 Workbench 搜索、打开并追溯 canonical 来源；Workbench 只做统一阅读层，不改变 `ledger-map` 的唯一写入者。
+- 迁移策略：现有驾驶舱、复盘组合、Agent 简报、策略矩阵、双盲等 HTML 先零重写注册/嵌入；高频页面再按“研究回答 → daily-agent → 证据/记忆/回检”顺序原生化，功能等价前不删除旧渲染器。
+- 技术选型：React + Vite 静态前端由现有 FastAPI 托管，继续复用 SSE；相比 Next.js，不引入第二套 Node 服务端运行时。右侧检查器默认展示证据、时点、L1-L4、缺口与降级，记忆展示本次命中的 corrections/experience cards，而非泛化成长等级。
+- 设计文档：`docs/superpowers/specs/2026-07-10-agent-workbench-ui-redesign-design.md`，分支提交 `a233190`。当前停在 spec 用户审阅门，尚未进入实现。
