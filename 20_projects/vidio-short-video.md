@@ -30,9 +30,13 @@ related: ["[[finhot]]", "[[finance-workspace-private]]"]
 | `industry7view-card-lab/` | 成片生产（行业卡/Remotion） |
 | `短视频演讲稿/` | 题材母稿 |
 
-## 关键决策
-- 旧号首条产品介绍冷启动失败、0 粉 → **建议新号**
-- 前 15 条禁止硬广/外链；人设=金融信息效率独立开发者
+## 关键决策（2026-07-10 用户确认）
+- 旧号 **弃用** · **开新号**
+- 主叙事：**Deep Fomo 研究过程**；FinHot 第 16 条后软植入
+- 出镜：**情绪素材 + 屏幕**（约 0–3.5s 硬切）
+- 前 10 条：框架优先、少点具体票
+- Industry 7View：**偶尔插 1 条**（每 6–8 条 ≤1）
+- 前 15 条禁止硬广/外链/报票 CTA
 - 完播+评论优先于播放量
 
 ## 任务看板
@@ -40,13 +44,17 @@ related: ["[[finhot]]", "[[finance-workspace-private]]"]
 |------|------|------|------|
 | 仓库清理 + ops 骨架 | grok | done | branch ops/short-video |
 | 知识资产首批入库 | grok | done | hooks/skills/coldstart |
-| 新号资料定稿 | human | todo | profile-copy 三选一 |
-| 前 7 条可拍脚本 | grok | todo | scripts/ |
+| 全 repo 起号规划 | grok | done | launch-plan.md |
+| 决策锁定写入文档 | grok | done | 情绪+屏幕 / 偶插 / 弃旧开新 |
+| 新号资料定稿 | human | todo | profile-copy 昵称三选一 |
+| 前 7 条可拍脚本 | grok | todo | 等昵称或直接开工 |
+| face-hook 素材规范 + 试渲染 | both | todo | kit + 情绪段 |
 | 发布后复盘闭环 | both | todo | reviews/ |
 
 ## 相关知识
-- 项目内全文：vidio `ops/knowledge/README.md`（不重复粘贴，避免双源）
+- 项目内全文：vidio `ops/knowledge/README.md`、`ops/douyin/launch-plan.md`
 - 产品：[[finhot]] · [[finance-workspace-private]]
 
 ## 交接记录
 - 2026-07-10 · grok · 建 MOC；沉淀 hooks/skills/算法假设到 vidio/ops/knowledge
+- 2026-07-10 · grok · 用户确认：情绪+屏幕、产业偶插、弃旧开新；更新排期与 strategy
