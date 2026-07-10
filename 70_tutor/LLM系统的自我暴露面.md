@@ -1,3 +1,14 @@
+---
+title: LLM 系统的自我暴露面
+type: tutor-note
+agent: devin
+source: Devin 会话（Knevo 蒸馏探讨）
+date: 2026-07-09
+tags: [llm, security, prompt, architecture]
+status: draft
+related: ["[[skill编排层与自由编排verifier]]"]
+---
+
 # LLM 系统的自我暴露面：prompt 当公开文档写
 
 ## 概念

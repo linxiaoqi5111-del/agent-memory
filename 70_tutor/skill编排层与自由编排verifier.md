@@ -1,8 +1,13 @@
 ---
-type: tutor_note
+title: skill 编排层与自由编排 verifier
+type: tutor-note
+agent: devin
 topic: Agent 架构
 date: 2026-07-09
 source: Devin 会话（Knevo 蒸馏探讨）
+tags: [agent, skill, verifier, orchestration]
+status: draft
+related: ["[[长尾分布与头尾分治]]", "[[头尾分治优化工程]]", "[[GraphRAG与我们的低配实现]]"]
 ---
 
 # skill = 编排层 vs 自由编排 + verifier

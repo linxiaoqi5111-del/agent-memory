@@ -1,3 +1,14 @@
+---
+title: 结论 TTL 与 delta-only 跟踪契约
+type: tutor-note
+agent: devin
+source: Devin 会话（Knevo 蒸馏探讨）
+date: 2026-07-09
+tags: [tracking, ttl, delta, reporting]
+status: draft
+related: ["[[记忆prior化与贝叶斯仲裁]]"]
+---
+
 # 结论 TTL 与 delta-only 跟踪契约
 
 ## 概念

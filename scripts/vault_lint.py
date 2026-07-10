@@ -38,14 +38,23 @@ TYPE_DIRS = {
     "convention": "30_conventions",
     "playbook": "40_playbooks",
     "agent-card": "50_agents",
+    "dialogue": "60_dialogues",
+    "tutor-note": "70_tutor",
 }
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]")
 CODE_RE = re.compile(r"```.*?```|`[^`\n]*`", re.DOTALL)
 INBOX_MAX_AGE_DAYS = 14
 KNOWLEDGE_STALE_DAYS = 90
-# 不做 frontmatter 校验的路径（模板本身是占位符；README/欢迎页是导览）。
-SKIP_FRONTMATTER = {"_templates", "README.md", "欢迎.md"}
+# 不做 frontmatter 校验的路径（模板、Agent 配置、生成报告和导览页不是 vault 笔记）。
+SKIP_FRONTMATTER = {
+    ".agents",
+    "_templates",
+    "可证伪点回检",
+    "_template.md",
+    "README.md",
+    "欢迎.md",
+}
 
 
 def parse_frontmatter(text: str) -> dict[str, str] | None:
@@ -72,6 +81,7 @@ def main() -> int:
 
     md_files = [p for p in VAULT.rglob("*.md") if ".git" not in p.parts]
     basenames = {p.stem for p in md_files}
+    directory_names = {p.name for p in VAULT.iterdir() if p.is_dir()}
     errors: list[str] = []
     warns: list[str] = []
     today = dt.date.today()
@@ -88,7 +98,7 @@ def main() -> int:
             target = link.strip().rstrip("\\").split("/")[-1]
             if target.endswith(".md"):
                 target = target[:-3]
-            if target and target not in basenames:
+            if target and target not in basenames and target not in directory_names:
                 errors.append(f"{rel}: 死链 [[{link.strip()}]]")
 
         fm = parse_frontmatter(text)

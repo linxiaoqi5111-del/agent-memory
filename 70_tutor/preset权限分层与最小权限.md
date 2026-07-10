@@ -1,3 +1,14 @@
+---
+title: preset 权限分层与最小权限
+type: tutor-note
+agent: devin
+source: Devin 会话（Knevo 蒸馏探讨）
+date: 2026-07-09
+tags: [agent, security, permissions, orchestration]
+status: draft
+related: ["[[单入口派单与平铺skill路由]]"]
+---
+
 # preset 权限分层：最小权限原则在 agent 派单的应用
 
 ## 概念

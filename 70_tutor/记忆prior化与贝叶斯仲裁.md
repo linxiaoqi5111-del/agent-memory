@@ -1,3 +1,14 @@
+---
+title: 记忆 prior 化与贝叶斯仲裁
+type: tutor-note
+agent: devin
+source: Devin 会话（Knevo 蒸馏探讨）
+date: 2026-07-09
+tags: [memory, bayesian, conflict-resolution, rag]
+status: draft
+related: ["[[GraphRAG与我们的低配实现]]"]
+---
+
 # 记忆 prior 化与贝叶斯仲裁：多记忆源冲突怎么办
 
 ## 概念

@@ -1,8 +1,13 @@
 ---
-type: tutor_note
+title: GraphRAG 与我们的低配实现
+type: tutor-note
+agent: devin
 topic: RAG / 检索架构
 date: 2026-07-09
 source: Devin 会话（Knevo 蒸馏探讨）
+tags: [rag, graph, retrieval, architecture]
+status: draft
+related: ["[[skill编排层与自由编排verifier]]", "[[头尾分治优化工程]]"]
 ---
 
 # GraphRAG 与我们的低配实现

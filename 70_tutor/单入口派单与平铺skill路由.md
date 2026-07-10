@@ -1,3 +1,14 @@
+---
+title: 单入口派单与平铺 skill 路由
+type: tutor-note
+agent: devin
+source: Devin 会话（Knevo 蒸馏探讨）
+date: 2026-07-09
+tags: [agent, routing, skill, orchestration]
+status: draft
+related: ["[[skill编排层与自由编排verifier]]", "[[preset权限分层与最小权限]]"]
+---
+
 # 单入口派单 vs 平铺 skill 路由
 
 ## 概念

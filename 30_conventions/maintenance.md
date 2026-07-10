@@ -22,6 +22,15 @@ tags: [convention, maintenance, core]
 - 一个事实只在一个地方维护。其他地方用双链 `[[...]]` 指过去，不复制粘贴。
 - 发现重复/冲突时，合并到一条，旧的标 `status: deprecated` 或删除。
 
+## 科普学习资产：先检阅，后落库
+
+`70_tutor/` 保存用户理解概念、原理和技术取舍所需的学习笔记，不保存 Agent 的运行知识。会话收尾时使用 `session-tutor-writeback` skill：
+
+1. Agent 只生成候选摘要，不改文件；
+2. 用户检阅、要求修正或明确批准具体候选；
+3. 仅把获批候选按 `_templates/tutor-note.md` 写入并更新索引；
+4. 未获批内容不进入 vault。
+
 ## 写入检查清单（每次写笔记前过一遍）
 
 - [ ] frontmatter 完整（title / type / agent / source / date / tags）
@@ -30,6 +39,7 @@ tags: [convention, maintenance, core]
 - [ ] 引用其他笔记用双链而非复制
 - [ ] 如果是结论/事实，标了 `status`
 - [ ] 若改动会影响其他 Agent 行为（约定/偏好/agent 卡/playbook），已带 provenance 且经人工审阅（见 [[trust-boundary]]）
+- [ ] `70_tutor/` 内容已由用户明确批准，且记录 `reviewed_by` / `reviewed_at`
 
 ## 定期维护任务（已脚本化为 exit-code 门）
 
