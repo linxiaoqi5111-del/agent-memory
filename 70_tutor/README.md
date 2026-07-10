@@ -8,9 +8,9 @@
 
 使用 `tutor` skill（手动触发：`@tutor` 或 `@session-tutor`；自然语言“session tutor”也可）：
 
-1. 会话结束前只整理候选摘要，不写文件；
-2. 用户检阅理解，可要求修改或跳过；
-3. 用户明确批准具体候选后，才按 `_templates/tutor-note.md` 落库；
+1. 先围绕一个核心概念讲解、举例并检查用户是否理解，不写文件；
+2. 用户确认理解后，才整理少量落库候选；
+3. “理解了”不等于批准；用户明确批准具体候选后，才按 `_templates/tutor-note.md` 落库；
 4. 写入后更新本索引并运行 `python3 scripts/vault_lint.py`。
 
 ## 目录

@@ -22,7 +22,7 @@ tags: [agent-card, devin]
   - 知识层：稳定可复用的方法论、系统设计原则、排错经验，提炼进 `10_knowledge/`（`status: verified`）。
   - 学习样本层：单次问答评分、用户纠偏、案例样本，写项目内 `experience_cards.jsonl` / `corrections.jsonl` / eval cases，不塞进项目交接记录。
 - 临时/原始输出进 `00_inbox/`。
-- 会话中若产生了可迁移的科普/原理讲解，收尾时调用 `tutor`（手动触发：`@tutor` 或 `@session-tutor`；自然语言“session tutor”也可）：先把候选摘要交用户检阅，只有用户明确批准后才写 `70_tutor/`。
+- 会话中若产生了可迁移的科普/原理讲解，收尾时调用 `tutor`（手动触发：`@tutor` 或 `@session-tutor`；自然语言“session tutor”也可）：先讲解并确认用户理解，再交候选摘要，只有用户明确批准后才写 `70_tutor/`。
 
 ## 接入方式
 - 直接 `git clone` 本仓库读写（用有写权限的 PAT）。

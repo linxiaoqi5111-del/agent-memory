@@ -26,10 +26,10 @@ tags: [convention, maintenance, core]
 
 `70_tutor/` 保存用户理解概念、原理和技术取舍所需的学习笔记，不保存 Agent 的运行知识。会话收尾时使用 `tutor` skill（手动触发：`@tutor` 或 `@session-tutor`；自然语言“session tutor”也可）：
 
-1. Agent 只生成候选摘要，不改文件；
-2. 用户检阅、要求修正或明确批准具体候选；
-3. 仅把获批候选按 `_templates/tutor-note.md` 写入并更新索引；
-4. 未获批内容不进入 vault。
+1. Agent 先讲解一个核心概念并确认用户理解，不改文件；
+2. 理解后才生成少量候选摘要；
+3. “理解了”不等于批准，用户必须明确批准具体候选；
+4. 仅把获批候选按 `_templates/tutor-note.md` 写入并更新索引，未获批内容不进入 vault。
 
 ## 写入检查清单（每次写笔记前过一遍）
 
