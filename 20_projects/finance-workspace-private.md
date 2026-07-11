@@ -41,6 +41,7 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 ## 任务看板
 | 任务 | 负责 | 状态 | 备注 |
 |---|---|---|---|
+| 双时态历史评测 10 日 pilot | devin | done | finance PR #189；扩到 80 日前先人工复核金标准与连续窗口缺口 |
 | D8 剧本库扩容：DuckDB 回补 2019~2024 板块逐日历史（pct_chg/diff_ratio/amount），随后写「历史窗口扫描→批量 draft 卡」脚本半自动扩卡（口径与 fact_sector_daily 统一、量能维度补齐；catalyst/环境标签仍走人工/知识库）| 用户回补数据 → devin 写扫描脚本 | 待办 | 2026-07-09 留档；参考 duckdb-backfill skill；卡入库仍走 draft→多源核数→approved 门控 |
 | Chat-first Skill Workbench | codex 规划 → 执行 Agent 实施 | doing | 设计与实施表提交 `6fb0ce0`；PR #181 为结构化流式前置基线，下一步按 Task 0-9 实施持久会话、混合 Skill 路由和原生消息流 |
 | delta package 契约强化（manifest v1 / 多维校验 / 安全解压 / 原子回滚 / data-quality CI）| devin | doing | PR #179 待 review/merge，尚未合并；后续单独做历史债务清洗与环境 blueprint |
@@ -171,3 +172,4 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 设计文档：`docs/superpowers/specs/2026-07-10-agent-workbench-ui-redesign-design.md`，分支提交 `a233190`。当前停在 spec 用户审阅门，尚未进入实现。
 - 2026-07-10 · devin · 强化跨机增量同步的 delta package 契约（PR #179，待 review/merge，**尚未合并**）：给 `db_delta_*` 增量包加 manifest v1 + checksum/schema/date/row/table-set 多维校验、安全解压（防 zip 路径穿越）、完整包 vs partial 包显式语义、zero-row 修正、导入失败原子回滚，并挂 data-quality CI。**可复用架构决策**：跨机数据同步的可靠性靠「自描述 manifest + 多维校验 + 原子回滚」，把「按名存在」升级为「内容经校验可信」；完整/partial 语义必须显式化，否则消费端会把部分包当整包合并。测试 1031 passed / 2 skipped、CI 全绿。**后续动作**：先 review/merge，再单独做历史遗留债务清洗与环境 blueprint。
 - 2026-07-11 · codex · 用户确认 Workbench 采用 chat-first + Skill 模块化方向：Conversation 管长期消息，Run 管单轮执行，现有 `Run.session_id` 兼容映射 `conversation_id`；每轮重新跑 Ask/RAG 检索，并注入压缩会话上下文，不能长期复用首轮证据。Skill 采用“手动指定必执行 + 规则兜底 + LLM allowlist 自动补充”的混合路由，默认每轮最多 3 个；executor 先产出锁定数字/引用的结构化模块，LLM 只负责证据边界内的综合表达。PR #181 已覆盖首段结构化模块 SSE，本轮设计在其上扩展有序可重放消息流、持久会话与 Daily Review/Daily Agent 首批 Skill；旧 HTML 仅作原始报告。设计与执行表：`docs/superpowers/specs/2026-07-11-chat-first-skill-workbench-design.md`、`docs/superpowers/plans/2026-07-11-chat-first-skill-workbench.md`，提交 `6fb0ce0`。
+- 2026-07-10 · devin · 完成双时态历史评测基础设施（finance PR #189，待用户确认合并）：`final_history` 使用当前最佳事实并显式标记 ex-post，`as_known_at` 只保留 cutoff 前可见行与 Git 资料；配对快照绑定源库签名/内容哈希，并拒绝运行中变化的 DuckDB。10 日 pilot 结果为 final 10/10 ready、PIT 8 partial/2 pending、截止与分区违规 0；20 日成交额窗口 0/10 eligible。扩量前需处理两个边界：07-02/07-03 已不再是无资料对照，以及当前库无 append-only revision log，因此冲突字段为 0 不等于历史上没有修订。
