@@ -44,6 +44,7 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 | D8 剧本库扩容：DuckDB 回补 2019~2024 板块逐日历史（pct_chg/diff_ratio/amount），随后写「历史窗口扫描→批量 draft 卡」脚本半自动扩卡（口径与 fact_sector_daily 统一、量能维度补齐；catalyst/环境标签仍走人工/知识库）| 用户回补数据 → devin 写扫描脚本 | 待办 | 2026-07-09 留档；参考 duckdb-backfill skill；卡入库仍走 draft→多源核数→approved 门控 |
 | Chat-first Skill Workbench | codex 规划 → 执行 Agent 实施 | doing | 设计与实施表提交 `6fb0ce0`；PR #181 为结构化流式前置基线，下一步按 Task 0-9 实施持久会话、混合 Skill 路由和原生消息流 |
 | delta package 契约强化（manifest v1 / 多维校验 / 安全解压 / 原子回滚 / data-quality CI）| devin | doing | PR #179 待 review/merge，尚未合并；后续单独做历史债务清洗与环境 blueprint |
+| 忠实度 / 历史重放验收 | devin → 用户审定 | blocked | PR #191 已完成固定 10 日 Phase 1；等待人工审定 10 份 gold、最终阈值与版本缺口，确认前不得扩 Phase 2 |
 
 ## 交接记录
 - 2026-06-28 · devin · 初次建档（基于 README/仓库结构）
@@ -171,3 +172,4 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 设计文档：`docs/superpowers/specs/2026-07-10-agent-workbench-ui-redesign-design.md`，分支提交 `a233190`。当前停在 spec 用户审阅门，尚未进入实现。
 - 2026-07-10 · devin · 强化跨机增量同步的 delta package 契约（PR #179，待 review/merge，**尚未合并**）：给 `db_delta_*` 增量包加 manifest v1 + checksum/schema/date/row/table-set 多维校验、安全解压（防 zip 路径穿越）、完整包 vs partial 包显式语义、zero-row 修正、导入失败原子回滚，并挂 data-quality CI。**可复用架构决策**：跨机数据同步的可靠性靠「自描述 manifest + 多维校验 + 原子回滚」，把「按名存在」升级为「内容经校验可信」；完整/partial 语义必须显式化，否则消费端会把部分包当整包合并。测试 1031 passed / 2 skipped、CI 全绿。**后续动作**：先 review/merge，再单独做历史遗留债务清洗与环境 blueprint。
 - 2026-07-11 · codex · 用户确认 Workbench 采用 chat-first + Skill 模块化方向：Conversation 管长期消息，Run 管单轮执行，现有 `Run.session_id` 兼容映射 `conversation_id`；每轮重新跑 Ask/RAG 检索，并注入压缩会话上下文，不能长期复用首轮证据。Skill 采用“手动指定必执行 + 规则兜底 + LLM allowlist 自动补充”的混合路由，默认每轮最多 3 个；executor 先产出锁定数字/引用的结构化模块，LLM 只负责证据边界内的综合表达。PR #181 已覆盖首段结构化模块 SSE，本轮设计在其上扩展有序可重放消息流、持久会话与 Daily Review/Daily Agent 首批 Skill；旧 HTML 仅作原始报告。设计与执行表：`docs/superpowers/specs/2026-07-11-chat-first-skill-workbench-design.md`、`docs/superpowers/plans/2026-07-11-chat-first-skill-workbench.md`，提交 `6fb0ce0`。
+- 2026-07-11 · devin · 现状忠实度 / 历史重放 Phase 1 已落续作 PR #191（stacked on #189），但**未通过完成门**：固定 10 日登记为 8 份 canonical artifact + 2 日 `missing`；claim evaluator 对 JSON/Markdown/HTML 生成稳定 claim ID，显式区分 claim-level evidence 与 deterministic inferred mapping，后者可做 PIT 数字核验但绝不计入证据覆盖。a77 隔离 worktree 重跑时 DuckDB 签名前后不变；结果数字 323/325（99.3846%，另 4731 pending）、claim evidence 0/7368、cutoff 0/563，entity 1731 pending、fact/inference 7410 pending，10 份 gold 均为 candidate/0 approved，全部日期仍有版本缺口；`decision_eligible=false`、`phase_2_allowed=false`。**门控决策**：用户人工批准 gold/阈值前，不扩 50–100 日，不恢复预测优化；报告级引用或当前实体/成分不能回填为历史逐声明证据。
