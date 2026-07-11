@@ -43,6 +43,7 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 |---|---|---|---|
 | D8 剧本库扩容：DuckDB 回补 2019~2024 板块逐日历史（pct_chg/diff_ratio/amount），随后写「历史窗口扫描→批量 draft 卡」脚本半自动扩卡（口径与 fact_sector_daily 统一、量能维度补齐；catalyst/环境标签仍走人工/知识库）| 用户回补数据 → devin 写扫描脚本 | 待办 | 2026-07-09 留档；参考 duckdb-backfill skill；卡入库仍走 draft→多源核数→approved 门控 |
 | Chat-first Skill Workbench | codex 规划 → devin 实施 | done | PR #190 已 rebase 最新 `main` 并整合 runtime assurance；981 backend / 27 Vitest / 6 Playwright，CI 全绿、mergeable clean；仍为 draft，未合并 |
+| Workbench-first 垂直金融 Agent 产品化 | codex 设计 → 用户自用验收 → 再做托管内测 | doing | 采用双门制：当前先过 Self-use Maturity Gate；本人连续使用并明确认可后，才启动 Hosted Beta Readiness 与 10–30 人邀请测试。spec：`docs/superpowers/specs/2026-07-11-workbench-self-use-to-invite-beta-design.md` |
 | delta package 契约强化（manifest v1 / 多维校验 / 安全解压 / 原子回滚 / data-quality CI）| devin | doing | PR #179 待 review/merge，尚未合并；后续单独做历史债务清洗与环境 blueprint |
 | 忠实度 / 历史重放验收 | devin → 用户审定 | doing | #189→#196 已合并；a77 固定 runtime 与 lineage/PIT LaunchAgent 已上线，等待 5 个前向交易日及 claim-level Gold 双审；`decision_eligible=false` |
 
@@ -183,3 +184,5 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - 2026-07-11 · devin · PR #190 完成 Codex 风格的 Foresight 产品化适配（提交 `1f9ff14`）：不复制 Codex HTML/私有 CSS/assets，而把可复用产品语义映射为 Projects→唯一真实的本地「市场研究」工作区、Threads→Conversation、Composer→研究任务与 Skill 编排入口、Task Sidebar→证据/运行/记忆/回检及基于真实 Run 的步骤/证据/产物摘要。视觉从森林绿改为石墨/暖灰中性色 + 克制陶土橙，减少渐变与重阴影，保留成功/警告/失败语义色；Conversation/SSE/Run/Skill 协议和 local/private 边界不变。验证：ESLint、TypeScript、production build 通过，Vitest 27 passed，Playwright 桌面/平板/手机 6 passed；GitHub `workbench-check`/`registry-check` 全绿，PR 仍为 draft、mergeable clean。
 
 - 2026-07-11 · devin · PR #190 新增默认托管 GLM + 会话级 BYOK（提交 `d41865a`）：普通用户只看到「Foresight 默认模型」，服务端优先读取 `FORESIGHT_BUILTIN_LLM_API_KEY`（兼容 `ZHIPU_API_KEY` / `GLM_API_KEY`）；高级设置支持 GLM/OpenAI/DeepSeek/Kimi/通义千问固定 HTTPS preset 和 model 覆盖。BYOK key 按 `user_id` 仅存 FastAPI 进程内存，`SecretStr`/`repr=False` 防调试回显，Conversation worker 通过 `ContextVar` 获取当前 turn provider，避免修改全局环境导致并发串号；服务重启或 DELETE 即清除，不进磁盘、Conversation、Run、artifact、trace、日志或 Git。首版不允许任意 Base URL，避免 SSRF；无服务端 key 仍保留确定性模板降级。验证：Python 1232 passed / 1 skipped / 4 subtests，Vitest 28 passed，Playwright 7 passed / 2 skipped，GitHub 两项 CI 全绿，PR draft/open/mergeable clean。
+
+- 2026-07-11 · codex · 用户确认 Workbench-first 垂直金融 Agent 产品路线，并纠正阶段顺序为“双门制”：当前 P0 不是直接建设 10–30 人托管内测，而是先以 PR #190 为产品壳，通过 Self-use Maturity Gate——完成今日市场、题材研究、个股研究、消息解读、自选跟踪五个产品 Skill，统一数据新鲜度与真实数据质量，连续自用至少 10 个交易日且由用户本人明确认可；之后才进入 Hosted Beta Readiness，补认证、PostgreSQL 多租户、配额、公开证据网关、安全合规，再邀请 10–30 人。完整设计：`docs/superpowers/specs/2026-07-11-workbench-self-use-to-invite-beta-design.md`（提交 `190c2a1`）。**可复用决策**：founder/self-use product-quality gate 与 external beta readiness gate 分离，避免多租户基础设施掩盖核心产品尚不好用。
