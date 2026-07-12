@@ -1,0 +1,35 @@
+{
+  "updated": "2026-06-16T00:00:00+08:00",
+  "user": "alice",
+  "as_of": {
+    "duckdb": "2026-06-12",
+    "kb": "2026-06-15"
+  },
+  "sources": {
+    "duckdb": {
+      "ok": true
+    },
+    "kb": {
+      "ok": true
+    }
+  },
+  "focus_themes": [
+    {
+      "theme": "A",
+      "source": "kb",
+      "signals": {},
+      "misses": 0,
+      "stale": false,
+      "last_seen": "2026-06-15"
+    },
+    {
+      "theme": "B",
+      "source": "kb",
+      "signals": {},
+      "misses": 2,
+      "stale": true,
+      "last_seen": "2026-06-15"
+    }
+  ],
+  "watchlist": []
+}
