@@ -39,7 +39,13 @@ observed demand
 
 系统设计面试里可把它描述为“需求驱动的增量物化”：不用先把全量数据做到完美，而是对高价值子图建立可验证闭环，同时保留 review queue 控制 ontology 扩张。
 
+## 执行层补充
+
+- **批次范围应冻结在 task-plan 快照**：补 eval query 会提高主题的重要度并实时重排队列；执行中仍按已确认的批次收尾，重建后的新 P0 留给下一批，避免 scope creep。
+- **知识标识不是文件扩展名**：`800G_1.6T光模块` 这类 canonical name 含小数点，不能用通用 `Path.stem` 处理；只应精确移除结尾 `.md`。这个原则也适用于模型名、版本号、产品 SKU 等带点号的业务 ID。
+
 ## 参考
 
 - [[knowledge-base-private]]
 - https://github.com/linxiaoqi5111-del/knowledge-base-private/pull/256
+- https://github.com/linxiaoqi5111-del/knowledge-base-private/pull/258
