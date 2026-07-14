@@ -17,6 +17,7 @@ tags: [project, index, moc]
 | [[finance-workspace-private\|金融项目]] | finance-workspace-private | A股量化复盘+研究工具集 | Python + DuckDB + 飞书 |
 | [[knowledge-base-private\|知识库]] | knowledge-base-private | LLM 维护的金融知识图谱/Wiki | Python + RAG |
 | [[finance-research-site\|金融网站]] | finance-research-site | 面向读者+AI检索的研究网站 | Astro + Cloudflare |
+| [[金融Agent面试学习]] | agent-memory | 金融 Agent 大模型面试教材、教学计划与跨账号进度交接 | Markdown + Obsidian |
 
 ## 金融内容矩阵（它们怎么串起来）
 ```
