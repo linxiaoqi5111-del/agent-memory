@@ -35,16 +35,20 @@ related: ["[[大模型面试-金融Agent项目第一性原理复习手册-V3]]",
 
 不要重新从 SQL 或通用会计题开始。当前进度是：
 - V3 第 18 章 Knowledge Base RAG：已完成；
-- 第 19 章 Closed-loop Retrieval：已完成；
-- 第 20 章 DuckDB 与结构化市场数据：已完成；
-- 第 21 章 Output Review：进行中。
+- 第 19 章 Closed-loop Retrieval：只学了概览，用户明确认为过于粗略，必须从 19.1 开始重新精讲；
+- 第 20 章 DuckDB 与结构化市场数据：学过 SQL/DuckDB 基础和 D0–D9 概览，尚未达到完整面试掌握；
+- 第 21 章 Output Review：只学到定向修订和 reviewer 边界，暂时暂停。
 
-请从第 21.9 节“Review 与自动预测裁判的区别”继续。先让我回答：
-“一份回答的来源、分层、反证和缺口都合规，但股票后来下跌，能否判定 Output Review 失败？”
+请先重新教授第 19 章 Closed-loop Retrieval，不要直接跳到第 20 或第 21 章。要求像第 18 章一样逐节深入：
 
-正确方向应是：不能。Output Review 审核证据与表达是否合规；未来预测结果由 checkpoint/verdict 评估。
-
-然后继续第 21 章剩余内容，再按教学计划进入第 22 章 Agent Memory。
+1. 从一次 top-k 的确认偏误推导为什么需要 closed loop；
+2. 逐步画出 entity anchor → narrow → broad → counter 的真实数据流；
+3. 解释每类 query candidate 怎样生成、前一步如何影响后一步；
+4. 解释 RetrievalAttempt、BucketedHit、ClosedLoopRetrievalResult；
+5. 解释三次空尝试、状态、去重、分桶、freshness gate 和 warning；
+6. 映射到 `closed_loop_retrieval.py` 与 `ask.py`；
+7. 讲异常降级、延迟代价、评测指标、当前边界；
+8. 完成 30 秒、2 分钟和连续追问验收后，才能标记第 19 章完成。
 ```
 
 ## 2. 学习偏好
@@ -122,7 +126,9 @@ Markdown/YAML Page
 - Finance：1469 passed，3 skipped，7 subtests passed；
 - 两仓 pre-commit 和 CI 通过。
 
-### 3.3 已完成：Closed-loop Retrieval
+### 3.3 需重新精讲：Closed-loop Retrieval
+
+本章此前只通过概览和选择题快速带过。用户明确反馈：教学深度明显低于第 18 章，不能标记为已完成。
 
 三个检索孔径：
 
@@ -160,7 +166,22 @@ Markdown/YAML Page
 
 > “本轮未检索到反证”不等于“没有风险”。
 
-### 3.4 已完成：DuckDB 与结构化事实
+仍需系统掌握：
+
+- 为什么一次 top-k 会放大原始问题中的确认偏误；
+- entity anchor 如何生成 narrow candidate；
+- narrow hit 中的高信息词如何进入 broad context；
+- counter query 如何围绕主体和相关词主动证伪；
+- `RetrievalAttempt`、`BucketedHit`、`ClosedLoopRetrievalResult` 的字段与职责；
+- `MAX_EMPTY_ATTEMPTS = 3` 的控制流与召回/延迟权衡；
+- conclusion/clue/counter/discarded 的精确分桶条件；
+- aperture/path/chunk 去重；
+- freshness gate、timeout、stale、空命中的不同状态；
+- `ask.py` 如何消费 closed-loop result；
+- aperture 级评测、延迟和当前启发式边界；
+- 30 秒、2 分钟和连续追问表达。
+
+### 3.4 已初步学习：DuckDB 与结构化事实
 
 已掌握：
 
@@ -196,7 +217,7 @@ D0–D9 已学：
   - `error`；
   - `ok`。
 
-### 3.5 进行中：Output Review
+### 3.5 已开始但暂缓：Output Review
 
 已掌握：
 
@@ -225,7 +246,7 @@ D0–D9 已学：
 
 - 当前 `blocking=False`，是 advisory gate，不是生产级硬阻断安全门。
 
-下一题：
+恢复第 21 章时的下一题：
 
 > 一份回答的来源、分层、反证和缺口都合规，但股票后来下跌。能否据此判定 Output Review 失败？
 
@@ -237,16 +258,18 @@ D0–D9 已学：
 
 继续遵循教学计划：
 
-1. 完成第 21 章 Output Review；
-2. 第 22 章 Agent Memory；
-3. 第 23 章 PIT 与防前视；
-4. 第 24 章可观测性与回放；
-5. 第 25 章 L3、Research Judge、Research Queue；
-6. 第 26 章编排与风险门控；
-7. 第 27 章评测与学习闭环；
-8. 第 28 章真实问题全链路；
-9. 第 29–35 章选型、项目追问、实现边界和模拟面试；
-10. 最后补 Transformer、训练、推理和 Serving 等 P1 理论。
+1. 从 19.1 开始完整重学第 19 章 Closed-loop Retrieval；
+2. 回看第 20 章实现、异常、评测和面试表达，补足到 L5；
+3. 完成第 21 章 Output Review；
+4. 第 22 章 Agent Memory；
+5. 第 23 章 PIT 与防前视；
+6. 第 24 章可观测性与回放；
+7. 第 25 章 L3、Research Judge、Research Queue；
+8. 第 26 章编排与风险门控；
+9. 第 27 章评测与学习闭环；
+10. 第 28 章真实问题全链路；
+11. 第 29–35 章选型、项目追问、实现边界和模拟面试；
+12. 最后补 Transformer、训练、推理和 Serving 等 P1 理论。
 
 ## 5. 项目真实边界
 
