@@ -207,3 +207,9 @@ DuckDB → detect_turning_points.py / backtest_sector.py → 信号+板块边际
 - #268（orphan marker 归一化）已合并，main CI 全绿（PR 上的 workbench-check failure 为 corepack 下载 pnpm 的网络抖动，与代码无关）。
 - Mac runtime 已更新至 00f5d2b 并重启；真实 ask（液冷服务器）验证：grounded shadow status=repaired、presented_answer 有完整正文、不再出现 insufficient_grounded_body，最终 answer.md 即 grounded presenter 输出、0 marker 泄漏。
 - 下一步：方案 3（skill 并行化 + 共享检索缓存）。
+
+## 2026-07-18 方案 3 完成（PR #269）
+- skill 改为共享线程池提前提交、按路由顺序消费；WORKBENCH_PARALLEL_SKILLS=0 回退串行；预算/超时/降级语义与输出确定性保持。
+- 编排层最终 compose 的 AskOptions 补上 wiki_rag_cache_scope（与 owner skill 相同的 user:conversation scope），W 段向量检索命中 kb_rag 进程级 TTL 缓存。
+- CI 全绿、1623 测试通过、黄金快照不变；Mac 已更新至 4c6816a 并真实 ask 验证（69s/59s vs 之前 71-72s，单 owner skill 路由下并行收益有限，多 skill 场景由单测覆盖）。
+- 待办顺序剩余：方案 6B（存储迁 SQLite）→ 方案 2（LLM 检索 planner）。
